@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+.container_Home {
+  min-height: 100vh;
+  position: relative;
+  background-color: $bg;
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+@media (max-width: $lg) {
+  .container_Home {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: $llg) {
+  .container_Home {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+@media (max-width: $sm) {
+  .container_Home {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}

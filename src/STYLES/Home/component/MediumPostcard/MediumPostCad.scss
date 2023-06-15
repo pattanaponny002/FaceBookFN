@@ -1,0 +1,276 @@
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+$fb_color: rgb(0, 132, 255);
+.sub_container_message {
+  width: 95%;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .section_image_and_message {
+    display: flex;
+    .wrapper_image {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+    }
+    .container_description {
+      width: 100%;
+      min-height: 30px;
+      display: flex;
+      flex-direction: column;
+      span[class="message_card"] {
+        width: 150px;
+        min-height: 50px;
+        word-break: break-all;
+        display: flex;
+        padding: 2% 0 1% 2%;
+        gap: 10%;
+        border-radius: 15px;
+        background-color: $bg;
+        flex-direction: column;
+        .name {
+          font-size: 0.8rem;
+          display: flex;
+          gap: 5%;
+          align-items: center;
+          text-transform: capitalize;
+          cursor: pointer;
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+        .name:hover {
+          text-decoration: underline;
+        }
+        .message {
+          font-size: 0.7rem;
+          margin-top: 5%;
+          margin-left: 5%;
+        }
+      }
+      .container_replies {
+        display: flex;
+        gap: 2%;
+        width: 80%;
+
+        span[class="tool"] {
+          font-size: 0.8rem;
+          cursor: pointer;
+        }
+        span[class="tool"]:hover {
+          text-decoration: underline;
+        }
+        .time {
+          font-size: 0.7rem;
+          color: gray;
+        }
+      }
+    }
+  }
+  .comment {
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: gray;
+    margin: 0 0 0 8%;
+  }
+  .comment:hover {
+    text-decoration: underline;
+  }
+  .section_sub_replies_comment {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    width: 80%;
+    align-self: flex-end;
+    .card {
+      display: flex;
+      min-width: 250px;
+      width: 40%;
+      flex-direction: column;
+      span[class="message_card"] {
+        min-width: 200px;
+        min-height: 50px;
+
+        word-break: break-all;
+        display: flex;
+        padding: 5%;
+        gap: 10%;
+        border-radius: 15px;
+        background-color: $bg;
+        flex-direction: column;
+        position: relative;
+        .sub_wrapper_image {
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          top: 5px;
+          right: 5%;
+          img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+          }
+        }
+        .name {
+          font-size: 0.8rem;
+          display: flex;
+          gap: 5%;
+          align-items: center;
+          text-transform: capitalize;
+          cursor: pointer;
+
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+        .name:hover {
+          text-decoration: underline;
+        }
+        .message {
+          font-size: 0.7rem;
+          margin-top: 5%;
+          display: flex;
+          gap: 3%;
+          .wrapper_message {
+            display: flex;
+            flex-direction: row;
+            .underline_at {
+              cursor: pointer;
+            }
+            .underline_at:hover {
+              text-decoration: underline;
+            }
+            .name_at {
+              color: $fb_color;
+              cursor: pointer;
+              display: flex;
+            }
+            .name_at:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+      .container_replies {
+        display: flex;
+        gap: 5%;
+        margin: 2% 0 5% 10%;
+        span[class="tool"] {
+          font-size: 0.7rem;
+          cursor: pointer;
+        }
+        span[class="tool"]:hover {
+          text-decoration: underline;
+        }
+        .time {
+          min-width: 70px;
+          display: flex;
+          font-size: 0.7rem;
+          color: gray;
+        }
+      }
+    }
+  }
+  .section_sub_comment {
+    width: 100%;
+    border-radius: 15px;
+    background-color: $bg;
+    display: flex;
+    gap: 1%;
+    min-height: 120px;
+    padding: 5% 0 2% 2%;
+    max-width: 550px;
+    .wrapper_image {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+    }
+    .sub_container_tools {
+      width: 90%;
+      min-height: 100px;
+      justify-content: space-around;
+      display: flex;
+      flex-direction: column;
+      textarea[class="textarea_replies"] {
+        border-radius: 13px;
+        width: 85%;
+        min-height: 60px;
+        outline: none;
+        font-family: "Poppins", sans-serif;
+        word-break: break-all;
+        resize: none;
+        padding: 2%;
+        border: none;
+      }
+      .container_input_tools {
+        display: flex;
+
+        gap: 5px;
+        align-items: center;
+        .wrapper_icon_tools {
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .wrapper_icon_tools:hover {
+          > * {
+            color: $fb_color;
+          }
+        }
+        .sub_send {
+          margin-left: auto;
+          border: none;
+          cursor: pointer;
+          > * {
+            color: $fb_color;
+          }
+        }
+        .sub_send:hover {
+          > * {
+            color: $fb_color;
+          }
+        }
+        .To {
+          margin-left: 2%;
+          font-size: 0.7rem;
+        }
+        .replieTo {
+          width: 80px;
+          font-size: 0.7rem;
+          color: $fb_color;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+.component_drawer_Side {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  top: 5rem;
+  overflow-y: auto;
+  .container_lists {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 2rem 0;
+    justify-content: center;
+    border-bottom: 2px solid grey;
+    gap: 1rem;
+
+    li {
+      width: 90%;
+      list-style: none;
+      height: 3rem;
+      display: flex;
+      gap: 1rem;
+      cursor: pointer;
+      padding: 0 1rem 0 0;
+      align-items: center;
+      .wrapper_icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 15%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .wrapper_icon:hover {
+        background-color: #cbced1;
+      }
+      .wrapper_list {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15%;
+        img {
+          border-radius: 20%;
+          width: 45px;
+          height: 45px;
+        }
+      }
+    }
+
+    li[class="card_list"]:hover {
+      background-color: #cbced1;
+    }
+  }
+  .container_lists.second {
+    border-color: transparent;
+  }
+}
+@media (max-width: $llg) {
+  .component_drawer_Side {
+    display: none;
+  }
+}

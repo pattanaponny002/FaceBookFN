@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+.wrapper_message {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  .message {
+    width: 50%;
+    min-width: 200px;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    padding-left: 5%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    align-self: flex-end;
+    .text {
+      display: flex;
+      font-size: 10px;
+      word-break: break-all;
+      font-size: 1rem;
+    }
+  }
+  .date {
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    width: 100%;
+    font-size: 0.5rem;
+    margin-bottom: 5%;
+    font-size: 0.8rem;
+  }
+}

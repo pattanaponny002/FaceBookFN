@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+.container_Home {
+  min-height: 100vh;
+  position: relative;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+@media (max-width: 1024px) {
+  .container_Home {
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 1180px) {
+  .container_Home {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+@media (max-width: 640px) {
+  .container_Home {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}/*# sourceMappingURL=Home.css.map */

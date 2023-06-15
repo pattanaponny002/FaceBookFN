@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1280px;
+$xx-l: 1560px;
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+}
+html {
+  scroll-snap-type: y proximity;
+}
+.container_App {
+  min-height: 100vh;
+  margin-top: 0;
+}

@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+
+@mixin flex() {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+.container_chat {
+  border-radius: 15px;
+  position: fixed;
+  bottom: 0;
+  right: 5%;
+  width: 300px;
+  height: 380px;
+  padding: 10px;
+  background-color: white;
+  z-index: 100;
+  box-shadow: 0 3px 3px rgba(105, 102, 102, 0.3);
+
+  display: flex;
+  flex-direction: column;
+
+  .section1 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 2% 0 1%;
+    align-items: center;
+    gap: 1rem;
+    .wrapper_image {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+      .online {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+      }
+    }
+    .desc {
+      display: flex;
+      justify-content: space-between;
+      min-height: 30px;
+      flex-direction: column;
+      span[class="available"] {
+        font-size: 0.8rem;
+        color: gray;
+      }
+    }
+    .container {
+      flex: 1;
+      justify-self: flex-end;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      gap: 5px;
+      .wrapper_icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: $bg;
+        cursor: pointer;
+      }
+      .wrapper_icon:hover {
+        background-color: gray;
+        width: 25px;
+        height: 25px;
+        .icon {
+          color: white;
+        }
+      }
+    }
+  }
+  .section2 {
+    flex: 4;
+    position: relative;
+    overflow-y: auto;
+    display: flex;
+    .container_message {
+      position: absolute;
+      min-height: 270px;
+      width: 95%;
+      flex-direction: column;
+      gap: 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+  .section2::-webkit-scrollbar {
+    background-color: $bg;
+    width: 1vw;
+  }
+  .section2::-webkit-scrollbar-thumb {
+    background-color: gray;
+    width: 1vw;
+    border-radius: 15px;
+  }
+  .section3 {
+    flex: 0.5;
+    @include flex();
+    input {
+      width: 120px;
+      font-family: "Poppins", sans-serif;
+      padding-left: 3%;
+      border-radius: 15px;
+      background-color: $bg;
+      outline: none;
+      border: none;
+      transition: 0.5s;
+      height: 30px;
+    }
+
+    span[class="send"] {
+      cursor: pointer;
+      flex: 1;
+      @include flex();
+    }
+
+    span[class="send"]:hover {
+      color: gray;
+    }
+  }
+}

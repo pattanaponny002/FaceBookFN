@@ -1,0 +1,409 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+
+$mb: 400px;
+$sm: 640px;
+$md: 768px;
+$lg: 1024px;
+$llg: 1180px;
+$xl: 1280px;
+$xx-l: 1560px;
+$bg: #f0f2f5;
+$fb_color: rgb(0, 132, 255);
+$btn_color: #42b72a;
+.container_login {
+  min-height: 100vh;
+  background-color: $bg;
+  display: flex;
+  padding-bottom: 5%;
+  position: relative;
+
+  .container_content {
+    width: 100%;
+    display: flex;
+    .container_adding {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .boxes {
+        min-width: 350px;
+        max-width: 450px;
+        min-height: 550px;
+        width: 80%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        .facebook {
+          display: flex;
+          flex-direction: column;
+          font-size: 3rem;
+          color: $fb_color;
+        }
+        .des {
+          display: flex;
+          flex-direction: column;
+          .login {
+            color: black;
+            font-size: 1.5rem;
+          }
+          .choose {
+            color: gray;
+          }
+        }
+        .container_account {
+          margin-top: 5%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          .card_account {
+            position: relative;
+            cursor: pointer;
+            border-radius: 15px;
+            width: 175px;
+            height: 250px;
+            background-color: white;
+            overflow: hidden;
+            box-shadow: 2px 2px 2px rgba(105, 102, 102, 0.3);
+            border: 0.5px solid rgb(184, 178, 178);
+
+            .loading_card {
+              position: absolute;
+              inset: 0;
+              background-color: rgba(255, 255, 255, 0.8);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 99;
+            }
+            .wrapper_image {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              overflow: hidden;
+              height: 190px;
+              background-color: $bg;
+              img {
+                width: 175px;
+                height: 190px;
+              }
+            }
+            .tools {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 60px;
+              span {
+                color: $fb_color;
+              }
+            }
+          }
+          .card_account:hover {
+            box-shadow: 0px 10px 10px rgba(105, 102, 102, 0.3);
+          }
+        }
+      }
+    }
+    .container_template_login {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .boxes_login {
+        border-radius: 15px;
+        background-color: white;
+        min-width: 350px;
+        width: 450px;
+
+        justify-content: center;
+        box-shadow: 2px 2px 2px rgba(105, 102, 102, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        .wrapper {
+          width: 100%;
+          transition: 0.5s;
+          display: flex;
+          .form_login {
+            min-width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-top: 5%;
+            flex-direction: column;
+            transition: opacity 1s, transform 0.5s;
+            position: relative;
+            .loading_form {
+              position: absolute;
+              inset: 0;
+              background-color: rgba(255, 255, 255, 0.8);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 99;
+            }
+            .section1 {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 90%;
+              flex-direction: column;
+              gap: 1rem;
+              .login {
+                font-size: 3.5rem;
+                color: $fb_color;
+              }
+              .wrapper_input {
+                position: relative;
+                display: flex;
+                width: 95%;
+                border: 2px solid gray;
+                border-radius: 5px;
+                input {
+                  margin-left: 5%;
+                  width: 80%;
+                  height: 50px;
+                  border: none;
+                  font-family: "Poppins", sans-serif;
+                  font-size: 1.5rem;
+                  outline: 2px solid transparent;
+                  font-size: 1rem;
+                }
+
+                input:focus {
+                  border: none;
+                  &::placeholder {
+                    color: $fb_color;
+                  }
+                }
+                .wrapper_icon {
+                  position: absolute;
+                  top: 25%;
+                  right: 3%;
+                  cursor: pointer;
+                }
+              }
+              .wrapper_input:hover {
+                border: 2px solid $fb_color;
+              }
+              button {
+                cursor: pointer;
+                border-radius: 5px;
+                width: 95%;
+                height: 50px;
+                outline: none;
+                border: none;
+                background-color: $fb_color;
+                font-family: "Poppins", sans-serif;
+                color: white;
+              }
+              .forget_password {
+                color: $fb_color;
+                cursor: pointer;
+              }
+              .forget_password:hover {
+                text-decoration: underline;
+              }
+              .btn_register {
+                font-size: 1rem;
+              }
+              .new_account {
+                background-color: #42b72a;
+                font-size: 1rem;
+              }
+              .new_account:hover {
+                background-color: #216114;
+              }
+            }
+            .line {
+              padding-bottom: 5%;
+              border-bottom: 2px solid rgb(204, 201, 201);
+            }
+          }
+          .form_register {
+            min-width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 5% 0 5% 0;
+            flex-direction: column;
+            transition: opacity 1s, transform 0.5s;
+            .section1 {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              gap: 1rem;
+              width: 100%;
+              input[class="file_selection"] {
+                display: none;
+              }
+              .wrapper_profile {
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                img {
+                  width: 180px;
+                  height: 180px;
+                  border-radius: 50%;
+                }
+                .wrapper_selection {
+                  right: -5%;
+                  bottom: 15%;
+                  position: absolute;
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  background-color: gray;
+                  cursor: pointer;
+                }
+                .wrapper_selection:hover {
+                  background-color: $bg;
+                }
+              }
+              .wrapper_input {
+                position: relative;
+                width: 85%;
+                border: 2px solid gray;
+                border-radius: 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .wrapper_icon {
+                  z-index: 5;
+                  position: absolute;
+                  right: 2%;
+                  top: 25%;
+                  cursor: pointer;
+                }
+                .available_text {
+                  position: absolute;
+                  top: -50%;
+                  left: 0;
+                }
+                input {
+                  border: none;
+                  width: 85%;
+                  height: 50px;
+                  border-radius: 5px;
+                  font-family: "Poppins", sans-serif;
+                  font-size: 1.5rem;
+                  outline: 2px solid transparent;
+                  font-size: 1rem;
+                }
+
+                input:focus {
+                  border: none;
+                  &::placeholder {
+                    color: $fb_color;
+                  }
+                }
+              }
+              .wrapper_input:hover {
+                border: 2px solid $fb_color;
+              }
+              button {
+                cursor: pointer;
+                border-radius: 5px;
+                width: 80%;
+                height: 50px;
+                outline: none;
+                border: none;
+                background-color: $fb_color;
+                font-family: "Poppins", sans-serif;
+                color: white;
+              }
+              .forget_password {
+                color: $fb_color;
+                cursor: pointer;
+              }
+              .forget_password:hover {
+                text-decoration: underline;
+              }
+              .btn_register {
+                font-size: 1rem;
+              }
+              .new_account {
+                background-color: $fb_color;
+                font-size: 1rem;
+              }
+              .new_account:hover {
+                background-color: #4c7ad1;
+              }
+            }
+            .section_controller {
+              cursor: pointer;
+              span {
+                font-size: 0.8rem;
+                color: $fb_color;
+              }
+            }
+            .section_controller:hover {
+              span {
+                text-decoration: underline;
+              }
+            }
+            .line {
+              border-bottom: 2px solid rgb(204, 201, 201);
+            }
+          }
+        }
+        .wrapper.active {
+          transform: translateX(-100%);
+          .container_input {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .container_login {
+    .container_content {
+      display: flex;
+      flex-direction: column;
+      .container_adding {
+        display: flex;
+
+        .boxes {
+          padding-top: 15%;
+          width: 90%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .des {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .container_account {
+            .card_account {
+              width: 150px;
+              height: 250px;
+            }
+          }
+        }
+      }
+      .container_template_login {
+        .boxes_login {
+          width: 350px;
+        }
+      }
+    }
+  }
+}
