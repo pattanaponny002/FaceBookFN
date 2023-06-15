@@ -46,10 +46,10 @@ const Home = () => {
 
   const [toggleChatbox, settoggleChatbox] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    socket.emit("add_user", user_information);
-    return () => {};
-  }, [user_information._id]);
+  // React.useEffect(() => {
+  //   socket.emit("add_user", user_information);
+  //   return () => {};
+  // }, [user_information._id]);
   return (
     <div className="container_Home">
       <DialoguePost
