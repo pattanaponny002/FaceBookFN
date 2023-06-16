@@ -94,14 +94,14 @@
   flex: 1.5;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  position: relative;
   min-height: 140px;
-  gap: 0.5rem;
-  margin-top: 2%;
+  padding-bottom: 5%;
+  gap: 2%;
 }
 .container_main_content .profile_introduction .section2 .container .box2 span[class=name] {
-  font-size: 2rem;
+  font-size: 2.5rem;
   width: 100%;
 }
 .container_main_content .profile_introduction .section2 .container .box2 span[class=friend] {
@@ -122,11 +122,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.5s;
 }
 .container_main_content .profile_introduction .section2 .container .box2 .container_friend_image .wrapper_profile img {
   width: 45px;
   height: 45px;
   border-radius: 50%;
+}
+.container_main_content .profile_introduction .section2 .container .box2 .container_friend_image .wrapper_profile:hover {
+  transform: translateY(-15%);
 }
 .container_main_content .profile_introduction .section2 .container .box3 {
   flex: 1;
@@ -688,7 +693,8 @@
   }
   .container_main_content .profile_introduction .section2 .container .box2 .container_friend_image {
     display: flex;
-    justify-content: center;
+    align-self: flex-start;
+    margin-left: 30%;
     height: 30px;
     width: 20%;
   }

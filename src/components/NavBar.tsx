@@ -42,48 +42,17 @@ import {
 import { MainContextApi } from "../contextAPI/MainContextProvider";
 import Axios from "axios";
 import { icons } from "react-icons/lib";
+import { list_icon_first, list_icon_second, setIcon } from "./UTIL_KEEP_STUFF";
 const NavBar = () => {
-  const setIcon = [
-    "AiOutlineHome",
-    "AiOutlineShop",
-    "FaPeopleCarry",
-    "AiOutlineAccountBook",
-  ];
-
-  const setRigthIcon = ["AiOutlinePlus", "AiFillMessage", "MdNotifications"];
-
-  function icon_right(listname: string) {
-    switch (listname) {
-      case "AiOutlinePlus":
-        return <AiOutlinePlus size={25} color="black" />;
-      case "AiFillMessage":
-        return <AiFillMessage size={25} color="black" />;
-      case "AiOutlineAlignCenter":
-        return <AiOutlineAlignCenter size={25} color="black" />;
-      case "MdNotifications":
-        return <MdNotifications size={25} color="black" />;
-
-      default:
-        return null;
-    }
-  }
-
   const [searchFriend, setsearchFriend] = React.useState<DataProps[]>([]);
-
   const refSearch = React.useRef<HTMLInputElement>(null);
   const refDropdown = React.useRef<HTMLDivElement>(null);
   const refIcon = React.useRef<HTMLDivElement>(null);
-
   const refRightDropDown = React.useRef<HTMLDivElement>(null);
   const refRightDropDownChat = React.useRef<HTMLDivElement>(null);
   const refRightDropDownMessager = React.useRef<HTMLDivElement>(null);
   const refRightDropDownOption = React.useRef<HTMLDivElement>(null);
   const [state, dispatch] = React.useReducer(reducer_post, { ...state_post });
-  // const [state_second, dispatch_chat] = React.useReducer(
-  //   reducer_dropdown_chat,
-  //   { ...state_chat }
-  // );
-
   const [toggleDrawer, settoggleDrawer] = React.useState<boolean>(false);
   const [toggleSearchBar, settoggleSearchBar] = React.useState<boolean>(false);
   /// global state
@@ -92,7 +61,6 @@ const NavBar = () => {
   const [toggleOption, settoggleOption] = React.useState<boolean>(false);
   const { user, Dispatch, user_information } = React.useContext(userContextApi);
   const [windowWidth, setwindowWidth] = React.useState<number>(0);
-
   const [searchedFriend, setSearchedFriend] = React.useState<userInformation[]>(
     []
   );
@@ -127,75 +95,6 @@ const NavBar = () => {
   const widnsize_1268 = window.innerWidth < 1268;
   const navigate = useNavigate();
 
-  const list_icon_first = [
-    {
-      header: "header",
-      list_item: [
-        {
-          list_left: "icon1",
-          name: "list_1",
-          list_right: "icon1",
-        },
-        {
-          list_left: "icon2",
-          name: "list_2",
-          list_right: "icon2",
-        },
-        {
-          list_left: "icon3",
-          name: "list_3",
-          list_right: "icon3",
-        },
-        {
-          list_left: "icon2",
-          name: "list_4",
-          list_right: "icon2",
-        },
-        {
-          list_left: "icon3",
-          name: "list_5",
-          list_right: "icon3",
-        },
-      ],
-    },
-  ];
-  const list_icon_second = [
-    {
-      header: "header_2",
-      list_item: [
-        {
-          list_left: "icon1",
-          name: "list_second_1",
-          list_right: "icon1",
-        },
-        {
-          list_left: "icon2",
-          name: "list_second_2",
-          list_right: "icon2",
-        },
-        {
-          list_left: "icon3",
-          name: "list_second_3",
-          list_right: "icon3",
-        },
-        {
-          list_left: "icon1",
-          name: "list_second_4",
-          list_right: "icon1",
-        },
-        {
-          list_left: "icon2",
-          name: "list_second_5",
-          list_right: "icon2",
-        },
-        {
-          list_left: "icon3",
-          name: "list_second_6",
-          list_right: "icon3",
-        },
-      ],
-    },
-  ];
   async function CheckSearchFriend(e: ChangeEvent<HTMLInputElement>) {
     const username = e.target.value;
     const url =
@@ -298,15 +197,14 @@ const NavBar = () => {
               </div>
               <ul className="drop_down_new_friend_table">
                 {searchedFriend.length !== 0 ? (
-                  searchedFriend
-                    .slice(0, 5)
-                    .map((item, index) => (
-                      <ListNewFreind
-                        key={index}
-                        item={item}
-                        settoggleSearchBar={settoggleSearchBar}
-                      />
-                    ))
+                  searchedFriend.map((item, index) => (
+                    <ListNewFreind
+                      key={index}
+                      item={item}
+                      delay={index}
+                      settoggleSearchBar={settoggleSearchBar}
+                    />
+                  ))
                 ) : (
                   <div className="no_searching">
                     <BiSearchAlt size={50} /> No Searching Friend

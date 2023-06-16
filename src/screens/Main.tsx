@@ -36,6 +36,8 @@ import { REDUCER_CHATBOX } from "../reducers_utils/reducer_chatbox";
 import { socket } from "../socket";
 import { PostMessage } from "../contextAPI/PostContextProvider";
 import { CircularProgress } from "@mui/material";
+import DialoguePost from "../components/MainCenterSide/card_component/DialoguePost";
+import bg from "../assets/bg/bg.jpg";
 interface slider {
   backdrop: string;
   profile: string;
@@ -53,8 +55,6 @@ export interface MembersProps {
   updatedAt: string;
 }
 const Main = () => {
-  const bg = require("../assets/bg/natural-scenic-li-countryside-bamboo-outdoors.jpg");
-
   const random = Math.round(Math.random() * 1 + 5);
 
   const [Data, setData] = React.useState<DataPRops>();
@@ -63,12 +63,14 @@ const Main = () => {
   const { current_user, Dispatch_main } = React.useContext(MainContextApi);
 
   const { dataChat, Dispatch_chatbox } = React.useContext(ChatBoxContextApi);
+
   const [isLoading, setisLoading] = React.useState<boolean>(false);
 
   const [addingFriend, setaddingFriend] = React.useState<boolean>(false);
   const [followingMember, setfollowingMember] = React.useState<MembersProps[]>(
     []
   );
+
   const [displayPostMessage, setdisplayPostMessage] = React.useState<
     PostMessage[]
   >([]);
@@ -141,43 +143,54 @@ const Main = () => {
     }
   }
   async function addConversation(e: React.MouseEvent<HTMLLIElement>) {
-    e.stopPropagation();
-    // addConversation();
-
-    // ToggleDown
     if (current_user) {
-      Dispatch({
-        type: REDUCER_USER.TOGGLE_CHATBOX,
-        payload: { ...user, toggle_chat_box: true },
-      });
-
-      const data = {
-        senderId: user_information._id,
-        receiverId: current_user._id,
-      };
-      const url = process.env.REACT_APP_PORT + "/conversation/api/add";
-      const response = await Axios(url, {
-        method: "post",
-        data,
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (response.status === 200) {
-        socket.emit("join_room", dataChat);
-        const result = response.data.result;
-
-        ///find not findOne for checking so we would like to add [0]
-        console.log("id", result[0]._id);
-        Dispatch_chatbox({
-          type: REDUCER_CHATBOX.SET_CURRENT_CHATBOX,
-          payload: {
-            dataChat: {
-              ...dataChat,
-              chatuser: current_user,
-              conversationId: result[0]._id,
-            },
-          },
+      try {
+        const data = {
+          senderId: user_information._id,
+          receiverId: current_user._id,
+        };
+        const url = process.env.REACT_APP_PORT + "/conversation/api/add";
+        const response = await Axios(url, {
+          method: "post",
+          data,
+          headers: { "Content-Type": "application/json" },
         });
+
+        if (response.status === 200) {
+          const conversation = response.data.result;
+          console.log("EXIST ?? before send", conversation);
+          if (conversation) {
+            socket.emit("join_room", conversation);
+            Dispatch_chatbox({
+              type: REDUCER_CHATBOX.SET_CURRENT_CHATBOX,
+              payload: {
+                dataChat: {
+                  ...dataChat,
+                  chatuser: current_user,
+                  conversationId: conversation?._id,
+                },
+              },
+            });
+
+            Dispatch({
+              type: REDUCER_USER.TOGGLE_CHATBOX,
+              payload: { ...user, toggle_chat_box: true },
+            });
+          }
+
+          Dispatch_chatbox({
+            type: REDUCER_CHATBOX.SET_CURRENT_CHATBOX,
+            payload: {
+              dataChat: {
+                ...dataChat,
+                chatuser: current_user,
+                conversationId: conversation?._id,
+              },
+            },
+          });
+        }
+      } catch (err) {
+        alert("failed on main");
       }
     }
   }
@@ -218,6 +231,7 @@ const Main = () => {
       const message = response.data.message;
     }
   }
+
   React.useEffect(() => {
     if (displayPostMessage.length === 0) {
       fetchPostMessage();
@@ -233,8 +247,14 @@ const Main = () => {
   function FormattedTime(time: string) {
     return new Date(time).getTime();
   }
+
   return (
     <div className="container_main_content">
+      <DialoguePost
+        toggle={user.toggle_dialogue_post}
+        user={user}
+        Dispatch={Dispatch}
+      />
       <Dialogue
         topic="main"
         toggle={user.toggle_dialogue_main}
@@ -245,7 +265,7 @@ const Main = () => {
 
       <div className="profile_introduction">
         <div className="section1">
-          <img src={piscum[15]} alt="" />
+          <img src={bg} alt="" />
         </div>
         <div className="section2">
           <div className="container">
@@ -262,9 +282,7 @@ const Main = () => {
               </div>
             </div>
             <div className="box2">
-              <span className="name">
-                Wongsarakit Pattanapon (王若奇) {current_user.username}
-              </span>
+              <span className="name">{current_user.username}</span>
               <span className="friend">Friend 203</span>
               <div className="container_friend_image">
                 {FriendCircles &&
@@ -312,7 +330,7 @@ const Main = () => {
                       <span className="button">you self</span>
                     </>
                   )}
-                  {user_information._id !== current_user._id ? (
+                  {user_information?._id !== current_user?._id ? (
                     <span className="button2" onClick={addConversation}>
                       <img src={messenger} alt="" />
                       messager
@@ -452,7 +470,6 @@ const Main = () => {
                   }
                 >
                   Searching.....
-                  {user.toggle_dialogue_main ? "master" : "toggle"}
                 </span>
               </div>
               <div className="posting_message_tools">
@@ -501,6 +518,7 @@ const Main = () => {
                   }
                   return (
                     <Postcard
+                      key={index}
                       bigsize={index % 2 === 0 ? true : false}
                       size={300}
                       height={600}
@@ -511,7 +529,7 @@ const Main = () => {
                     />
                   );
                 })}
-            <Postcard percentage={100} />
+            {/* <Postcard percentage={100} />
             <Postcard
               bigsize
               size={300}
@@ -534,7 +552,7 @@ const Main = () => {
               width={500}
               height={600}
               percentage={100}
-            />
+            /> */}
           </div>
         </div>
       </div>

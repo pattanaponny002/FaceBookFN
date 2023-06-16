@@ -19,16 +19,16 @@ $bg: #f0f2f5;
     min-height: 50px;
     display: flex;
     justify-content: center;
-    padding-left: 5%;
     flex-direction: column;
     flex-wrap: wrap;
-    border-radius: 20px;
+    border-radius: 1.7rem;
     align-self: flex-end;
+
     .text {
       display: flex;
-      font-size: 10px;
       word-break: break-all;
-      font-size: 1rem;
+      font-size: 0.8rem;
+      margin: 10%;
     }
   }
   .date {

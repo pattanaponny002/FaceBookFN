@@ -155,8 +155,8 @@ $fb_color: rgb(0, 132, 255);
         width: 100%;
         display: flex;
         align-items: center;
-        border-bottom: 2px solid gray;
-        justify-content: flex-end;
+        justify-content: space-around;
+        border-bottom: 1.5px solid rgb(177, 174, 174);
         span {
           height: 4rem;
           flex: 1;
@@ -172,27 +172,26 @@ $fb_color: rgb(0, 132, 255);
         span[class="tools"]:hover {
           background-color: $bg;
         }
-        .icon_emoji {
-          cursor: pointer;
-          transition: transform 0.5s;
-        }
-        .icon_emoji:hover {
-          transform: translateY(-15%);
-        }
         .container_emoji {
-          width: 45%;
+          flex: 1;
           display: flex;
-          justify-content: flex-start;
+          justify-content: center;
           align-items: center;
           gap: 1rem;
-
+          .icon_emoji {
+            cursor: pointer;
+            transition: transform 0.5s;
+          }
+          .icon_emoji:hover {
+            transform: translateY(-15%);
+          }
           img {
             width: 30px;
             height: 30px;
           }
         }
         .comment {
-          width: 50%;
+          flex: 1;
           display: flex;
         }
         .comment:hover {
@@ -271,6 +270,7 @@ $fb_color: rgb(0, 132, 255);
             padding: 2% 1% 0 2%;
             border-radius: 15px;
             resize: none;
+            word-break: break-all;
             font-family: "Poppins", sans-serif;
           }
           .container_input_tools {

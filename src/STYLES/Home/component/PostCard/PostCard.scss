@@ -54,6 +54,11 @@ $linear_skeleton: rgb(250, 247, 247);
           justify-content: flex-start;
           align-items: center;
           gap: 10px;
+          span[class="profile_name"] {
+            font-weight: 600;
+            cursor: pointer;
+          }
+
           img {
             width: 20px;
             height: 20px;
@@ -214,6 +219,7 @@ $linear_skeleton: rgb(250, 247, 247);
     width: 90%;
     justify-content: space-evenly;
     color: gray;
+    gap: 1%;
     .wrapper_tools.like {
       border: 2px solid $bg;
       span[class="wrapper_emoji_like"] {

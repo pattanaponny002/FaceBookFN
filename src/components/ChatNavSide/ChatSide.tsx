@@ -100,6 +100,7 @@ const ChatSide = () => {
           chatUsers.map((item, index) => (
             <FriendCard
               key={index}
+              index={index}
               item={item}
               userID={user_information._id}
               onlineUsers={dataChat.onlineUsers}

@@ -66,13 +66,11 @@ const MainCenter = () => {
     const response = await Axios(url, { method: "get" });
 
     if (response.status === 200) {
-      const message = response.data.message;
       const posts = response.data.result;
       setdisplayPostMessage((prev) => posts);
     } else {
       const error = response.data.err;
       alert(error);
-      const message = response.data.message;
     }
   }
   React.useEffect(() => {
@@ -188,13 +186,14 @@ const MainCenter = () => {
             }
             return (
               <Postcard
+                key={index}
                 bigsize={index % 2 === 0 ? true : false}
                 size={300}
                 height={600}
                 width={550}
-                fontSize={fontsize}
                 percentage={95}
                 post_item={item}
+                fontSize={fontsize}
               />
             );
           })}

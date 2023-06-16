@@ -21,6 +21,8 @@ import { userInformation } from "../../../contextAPI/UserContextProvider";
 import Axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { ref } from "firebase/storage";
+import { icon_input_tools } from "../../UTIL_KEEP_STUFF";
+import { Icon_input_tools_mp } from "../../UTIL_KEEP_STUFF";
 interface MediumPostCardProp {
   item: DisplayMessageProps;
   name?: string;
@@ -58,47 +60,13 @@ const MediumPostCard = ({
   const { user_information } = useContext(userContextApi);
   const [repliedTo, setrepliedTo] = React.useState<string>(item.username);
   const [isLoading, setisLoading] = React.useState<boolean>(false);
-  const icon_input_tools = [
-    "AiFillPlusCircle",
-    "AiFillFileImage",
-    "AiOutlineFileGif",
-    "BsFillEmojiSmileFill",
-  ];
 
-  function Icon_input_tools(icon: string, size: number) {
-    switch (icon) {
-      case "AiFillPlusCircle":
-        return (
-          <AiFillPlusCircle
-            size={size}
-            // color="rgb(0, 132, 255)"
-            className="icon"
-          />
-        );
-      case "AiFillFileImage":
-        return (
-          <AiFillFileImage
-            // style={{ display: "" && "none" }}
-            size={size}
-            className="icon"
-          />
-        );
-      case "AiOutlineFileGif":
-        return <AiOutlineFileGif size={size} className="icon" />;
-      case "BsFillEmojiSmileFill":
-        return <BsFillEmojiSmileFill size={size} className="icon" />;
-
-      default:
-        return null;
-    }
-  }
   function convertTime(time: number) {
     const currentTime = Date.now();
 
     const threshold = 60 * 1000;
 
     const difference = currentTime - time;
-    console.log(currentTime, time, "=", difference);
     if (difference <= threshold) {
       return "Just now";
     }
@@ -257,16 +225,15 @@ const MediumPostCard = ({
 
                     <div className="message">
                       <span className="wrapper_message">
-                        <h4
-                          className="underline_at"
-                          style={{ color: "rgb(0, 132, 255)" }}
-                          onClick={(e) => {
-                            setrepliedTo((prev) => textreplies?.toReplies);
-                          }}
-                        >
-                          {"@" + textreplies.toReplies + ":"}
+                        <h4 className="text_h4">
+                          <span
+                            className="underline_at"
+                            style={{ color: "rgb(0, 132, 255)" }}
+                          >
+                            {"@" + textreplies.toReplies + "  "}
+                          </span>
+                          <span className="text">{textreplies.text}</span>
                         </h4>
-                        <h4>{textreplies.text}</h4>
                       </span>
                     </div>
                   </span>
@@ -298,6 +265,8 @@ const MediumPostCard = ({
             variants={animate_translateY}
             initial={"hidden"}
             animate="show"
+            exit={"removed"}
+            transition={{ duration: 0.5, easings: ["easeInOut"] }}
             onSubmit={sendReplies}
           >
             <div className="wrapper_image">
@@ -323,7 +292,7 @@ const MediumPostCard = ({
                 {icon_input_tools &&
                   icon_input_tools.map((item, index) => (
                     <span key={index} className="wrapper_icon_tools">
-                      {Icon_input_tools(item, 20)}
+                      {Icon_input_tools_mp(item)}
                     </span>
                   ))}
 

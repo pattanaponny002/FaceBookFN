@@ -23,7 +23,7 @@ import { REDUCER_USER } from "./reducers_utils/reducer_user";
 function App() {
   const location = useLocation();
   const shouldShowNavBar = location.pathname !== "/";
-  const refChatBox = React.useRef<HTMLDivElement>(null);
+  const refChatBox = React.createRef<HTMLDivElement>();
 
   const { user, Dispatch } = useContext(userContextApi);
 

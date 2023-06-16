@@ -75,13 +75,13 @@
 }
 .container_Navbar .profile_container .drop_down_container {
   position: absolute;
-  background-color: white;
   width: 350px;
   display: flex;
   min-height: 220px;
   flex-direction: column;
   top: 0;
   z-index: 99;
+  background-color: white;
   box-shadow: 0 3px 3px rgba(105, 102, 102, 0.3);
 }
 .container_Navbar .profile_container .drop_down_container .drop_container_tools_search {

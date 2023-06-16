@@ -39,11 +39,15 @@ import Skeleton from "../skeleton/Skeleton";
 import MediumPostCard from "./MediumPostCard";
 import { PostContextApi } from "../../../contextAPI/PostContextProvider";
 import Axios from "axios";
+import {
+  Icon_input_tools,
+  icon_input_tools,
+  Icon_input_tools_dp,
+} from "../../UTIL_KEEP_STUFF";
 interface DialogueProps {
   user: userProps;
   toggle?: boolean | undefined;
   Dispatch: Dispatch<Actions>;
-  ref: any;
   topic?: string;
   user_information?: userInformation;
 }
@@ -59,13 +63,7 @@ export interface DisplayMessageProps {
   post_id: string;
   imageURL?: string[];
 }
-const DialoguePost = ({
-  user,
-  toggle,
-  Dispatch,
-  ref,
-  topic,
-}: DialogueProps) => {
+const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
   const [isLoading, setisLoading] = React.useState<boolean>(false);
   const [isLoadingChat, setisLoadingChat] = React.useState<boolean>(false);
   const [displayMessagePost, setdisplayMessagePost] = React.useState<
@@ -75,48 +73,9 @@ const DialoguePost = ({
   const { post_message } = React.useContext(PostContextApi);
   const [userPost, setuserPost] = React.useState<userInformation>();
   const [text, setText] = React.useState<string>("");
-  const icon_input_tools = [
-    "AiFillPlusCircle",
-    "AiFillFileImage",
-    "AiOutlineFileGif",
-    "BsFillEmojiSmileFill",
-  ];
 
-  const color_gr = "gray";
   const refDialogue = React.useRef<HTMLDivElement>(null);
-  function Icon_input_tools(icon: string, size: number) {
-    switch (icon) {
-      case "AiFillPlusCircle":
-        return (
-          <AiFillPlusCircle
-            size={size}
-            // color="rgb(0, 132, 255)"
-            color={color_gr}
-            className="icon"
-          />
-        );
-      case "AiFillFileImage":
-        return (
-          <AiFillFileImage
-            // style={{ display: "" && "none" }}
-            size={size}
-            color={color_gr}
-            className="icon"
-          />
-        );
-      case "AiOutlineFileGif":
-        return (
-          <AiOutlineFileGif size={size} color={color_gr} className="icon" />
-        );
-      case "BsFillEmojiSmileFill":
-        return (
-          <BsFillEmojiSmileFill size={size} color={color_gr} className="icon" />
-        );
 
-      default:
-        return null;
-    }
-  }
   function closeDialoguePost(e: React.MouseEvent<HTMLDivElement>) {
     if (!refDialogue.current?.contains(e.target as Node)) {
       Dispatch({
@@ -133,7 +92,6 @@ const DialoguePost = ({
     e.preventDefault();
     if (user_information && post_message._id) {
       callbackIsLoading(true);
-      console.log("send_to_post_message_id", post_message._id);
       const messagePost: DisplayMessageProps = {
         post_id: post_message._id,
         username: user_information.username,
@@ -166,7 +124,6 @@ const DialoguePost = ({
     //Jun 13, 9:20:01 PM
 
     const newTime = parseInt(time, 10);
-    // console.log(newTime);
 
     const currentTime = Date.now();
     const threadshold = 60 * 1000;
@@ -186,7 +143,6 @@ const DialoguePost = ({
   }
   async function fetchChatPost() {
     if (user_information && post_message._id) {
-      console.log("FETCH ", post_message._id);
       const url =
         process.env.REACT_APP_PORT + "/chatpost/api/" + post_message._id;
 
@@ -196,7 +152,6 @@ const DialoguePost = ({
 
       if (response.status === 200) {
         const arraivalMessage = response.data.result;
-        console.log("Start FETCH", arraivalMessage);
 
         setdisplayMessagePost((prev) => [...arraivalMessage]);
       }
@@ -225,7 +180,6 @@ const DialoguePost = ({
       if (response.status === 200) {
         const message = response.data.message;
         const user = response.data.result;
-        console.log("POST", post_message._id);
         setuserPost((prev) => user);
       }
     }
@@ -277,7 +231,7 @@ const DialoguePost = ({
                 </div>
               )}
               <div className="postbar">
-                <span>Profile :{post_message?._id}</span>
+                <span>Profile </span>
               </div>
               <div className="container_comment">
                 <div className="container_profile">
@@ -313,13 +267,15 @@ const DialoguePost = ({
                 <div className="desc">
                   <div className="container_emoji">
                     {emoji &&
-                      emoji.map((item, index) => (
-                        <img
-                          className="icon_emoji"
-                          key={index}
-                          src={item.image}
-                        />
-                      ))}
+                      emoji
+                        .slice(0, 3)
+                        .map((item, index) => (
+                          <img
+                            className="icon_emoji"
+                            key={index}
+                            src={item.image}
+                          />
+                        ))}
                   </div>
 
                   <div className="comment">
@@ -389,7 +345,7 @@ const DialoguePost = ({
                         {icon_input_tools &&
                           icon_input_tools.map((item, index) => (
                             <span key={index} className="wrapper_icon_tools">
-                              {Icon_input_tools(item, 25)}
+                              {Icon_input_tools_dp(item, 25)}
                             </span>
                           ))}
                         {text && (

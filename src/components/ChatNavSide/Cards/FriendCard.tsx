@@ -15,8 +15,9 @@ interface FriendCardProps {
   item: MembersProps;
   userID: string;
   onlineUsers: onlineUser[] | undefined;
+  index: number;
 }
-const FriendCard = ({ item, userID, onlineUsers }: FriendCardProps) => {
+const FriendCard = ({ item, userID, onlineUsers, index }: FriendCardProps) => {
   const [chat, setchat] = React.useState<userInformation>();
   const { user, Dispatch, user_information } = React.useContext(userContextApi);
   const [online, setonline] = React.useState<boolean>(false);
@@ -44,50 +45,53 @@ const FriendCard = ({ item, userID, onlineUsers }: FriendCardProps) => {
     }
   }
 
-  function getNewID(result: any, chat: any) {
-    console.log("GET OR NOT FUN", result);
-  }
   async function addConversation(e: React.MouseEvent<HTMLLIElement>) {
-    e.stopPropagation();
     // addConversation();
-
     // ToggleDown
     if (chat?._id) {
-      Dispatch({
-        type: REDUCER_USER.TOGGLE_CHATBOX,
-        payload: { ...user, toggle_chat_box: true },
-      });
+      try {
+        //recieverID ***********
+        const data = {
+          senderId: user_information._id,
+          receiverId: chat._id,
+        };
+        const url = process.env.REACT_APP_PORT + "/conversation/api/add";
+        const response = await Axios(url, {
+          method: "post",
+          data,
+          headers: { "Content-Type": "application/json" },
+        });
+        /// this is on the disffernce state
+        if (response.status === 200) {
+          const conversation = response.data.result;
+          console.log("conversationFriend", conversation);
 
-      const data = {
-        senderId: user_information._id,
-        receiverId: chat._id,
-      };
-      const url = process.env.REACT_APP_PORT + "/conversation/api/add";
-      const response = await Axios(url, {
-        method: "post",
-        data,
-        headers: { "Content-Type": "application/json" },
-      });
-      /// this is on the disffernce state
-      if (response.status === 200) {
-        socket.emit("join_room", dataChat);
-        const message = response.data.message;
-        const result = response.data.result;
-        ///find not findOne for checking so we would like to add [0]
-        ///?
-        if (result) {
-          Dispatch_chatbox({
-            type: REDUCER_CHATBOX.SET_CURRENT_CHATBOX,
-            payload: {
-              dataChat: {
-                ...dataChat,
-                chatuser: chat,
-                conversationId: result[0]?._id,
+          ///find not findOne for checking so we would like to add [0]
+          ///?
+
+          if (conversation) {
+            Dispatch({
+              type: REDUCER_USER.TOGGLE_CHATBOX,
+              payload: { ...user, toggle_chat_box: true },
+            });
+            Dispatch_chatbox({
+              type: REDUCER_CHATBOX.SET_CURRENT_CHATBOX,
+              payload: {
+                dataChat: {
+                  ...dataChat,
+                  chatuser: chat,
+                  conversationId: conversation?._id,
+                },
               },
-            },
-          });
+            });
+            console.log("DataChat newFriend", conversation);
+            socket.emit("join_room", conversation);
+          }
         }
+      } catch (err) {
+        alert("failed conversation FriendCard");
       }
+      ////
     }
 
     // Dispatch_chatbox({
@@ -96,6 +100,7 @@ const FriendCard = ({ item, userID, onlineUsers }: FriendCardProps) => {
     // });
     /// setting conversation
   }
+
   React.useEffect(() => {
     if (!chat) {
       fetchUSer(item);
@@ -103,7 +108,6 @@ const FriendCard = ({ item, userID, onlineUsers }: FriendCardProps) => {
     return () => {};
   }, []);
   React.useEffect(() => {
-    console.log("onlineUSERPROPS", onlineUsers);
     chat && onlineUsers && checkOnline(chat);
 
     ///setOnline

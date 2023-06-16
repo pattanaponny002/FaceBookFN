@@ -8,24 +8,36 @@ import {
 import { MainContextApi } from "../../contextAPI/MainContextProvider";
 import { REDUCER_CURRENT_MAIN } from "../../reducers_utils/reducer_mainuser";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence, motion as m } from "framer-motion";
+import { drop_down, fadeInd_Right } from "../../motion";
 interface ListNewFreindProps {
   item: userInformation;
+  delay: number;
+  index?: number;
   settoggleSearchBar: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const ListNewFreind = ({ item, settoggleSearchBar }: ListNewFreindProps) => {
+const ListNewFreind = ({
+  item,
+  settoggleSearchBar,
+  delay,
+  index,
+}: ListNewFreindProps) => {
   const { current_user, Dispatch_main } = useContext(MainContextApi);
-  const { user, Dispatch } = useContext(userContextApi);
   const navigate = useNavigate();
   return (
-    <li
+    <m.li
+      variants={fadeInd_Right}
+      initial={"hidden"}
+      animate={"show"}
+      transition={{ delay: delay * 0.1, easings: ["easeInOut"] }}
       className="card_newfriend"
       onClick={() => {
         Dispatch_main({
           type: REDUCER_CURRENT_MAIN.SET_MAIN_CURRENT_USER,
           payload: { ...item },
         });
-        settoggleSearchBar((prev) => !prev);
         navigate("/Main");
+        settoggleSearchBar((prev) => !prev);
       }}
     >
       <div className="first_Section">
@@ -38,7 +50,7 @@ const ListNewFreind = ({ item, settoggleSearchBar }: ListNewFreindProps) => {
       <span className="wrapper_card">
         <AiFillCloseCircle />
       </span>
-    </li>
+    </m.li>
   );
 };
 

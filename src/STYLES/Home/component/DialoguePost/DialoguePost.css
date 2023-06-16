@@ -140,8 +140,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  border-bottom: 2px solid gray;
-  justify-content: flex-end;
+  justify-content: space-around;
+  border-bottom: 1.5px solid rgb(177, 174, 174);
 }
 .dialogue_post .container_post .container_comment .desc span {
   height: 4rem;
@@ -158,26 +158,26 @@
 .dialogue_post .container_post .container_comment .desc span[class=tools]:hover {
   background-color: #f0f2f5;
 }
-.dialogue_post .container_post .container_comment .desc .icon_emoji {
+.dialogue_post .container_post .container_comment .desc .container_emoji {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.dialogue_post .container_post .container_comment .desc .container_emoji .icon_emoji {
   cursor: pointer;
   transition: transform 0.5s;
 }
-.dialogue_post .container_post .container_comment .desc .icon_emoji:hover {
+.dialogue_post .container_post .container_comment .desc .container_emoji .icon_emoji:hover {
   transform: translateY(-15%);
-}
-.dialogue_post .container_post .container_comment .desc .container_emoji {
-  width: 45%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
 }
 .dialogue_post .container_post .container_comment .desc .container_emoji img {
   width: 30px;
   height: 30px;
 }
 .dialogue_post .container_post .container_comment .desc .comment {
-  width: 50%;
+  flex: 1;
   display: flex;
 }
 .dialogue_post .container_post .container_comment .desc .comment:hover span {
@@ -251,6 +251,7 @@
   padding: 2% 1% 0 2%;
   border-radius: 15px;
   resize: none;
+  word-break: break-all;
   font-family: "Poppins", sans-serif;
 }
 .dialogue_post .container_post .bottombar .subcontainer .wrapper_text_area .container_input_tools {

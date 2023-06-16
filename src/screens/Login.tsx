@@ -21,7 +21,6 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase_config";
 import { RegisterApi } from "../assets/classes/register_utils";
 import { REDUCER_CURRENT_INFORMATION } from "../reducers_utils/reducer_info_utils";
-import { socket } from "../socket";
 import { CircularProgress } from "@mui/material";
 interface MessageProps {
   text: string;
@@ -177,7 +176,6 @@ const Login = () => {
     const response = await Axios(url, { method: "get" });
     if (response.status === 200) {
       const userAutosave = response.data.result;
-      console.log("save", userAutosave);
 
       setuseAutoSave((prev) => userAutosave);
       Dispatch_info({

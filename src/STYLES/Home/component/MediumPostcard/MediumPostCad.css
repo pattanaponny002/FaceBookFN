@@ -3,10 +3,10 @@
   min-height: 50px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 .sub_container_message .section_image_and_message {
   display: flex;
+  gap: 1%;
 }
 .sub_container_message .section_image_and_message .wrapper_image {
   width: 45px;
@@ -32,7 +32,7 @@
   min-height: 50px;
   word-break: break-all;
   display: flex;
-  padding: 2% 0 1% 2%;
+  padding: 2%;
   gap: 10%;
   border-radius: 15px;
   background-color: #f0f2f5;
@@ -42,6 +42,7 @@
   font-size: 0.8rem;
   display: flex;
   gap: 5%;
+  font-weight: 700;
   align-items: center;
   text-transform: capitalize;
   cursor: pointer;
@@ -61,10 +62,11 @@
 .sub_container_message .section_image_and_message .container_description .container_replies {
   display: flex;
   gap: 2%;
-  width: 80%;
+  width: 100%;
+  margin-top: 1%;
 }
 .sub_container_message .section_image_and_message .container_description .container_replies span[class=tool] {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   cursor: pointer;
 }
 .sub_container_message .section_image_and_message .container_description .container_replies span[class=tool]:hover {
@@ -102,33 +104,39 @@
   min-height: 50px;
   word-break: break-all;
   display: flex;
-  padding: 5%;
-  gap: 10%;
+  padding: 3%;
   border-radius: 15px;
   background-color: #f0f2f5;
   flex-direction: column;
   position: relative;
 }
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .sub_wrapper_image {
+  left: -17%;
+  position: absolute;
   width: 35px;
   height: 35px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 5px;
-  right: 5%;
+  cursor: pointer;
+  transition: transform 0.5s;
 }
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .sub_wrapper_image img {
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .sub_wrapper_image:hover {
+  transform: scale(1.2);
+}
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .name {
-  font-size: 0.8rem;
+  flex: 1;
+  font-weight: 800;
+  font-size: 0.9rem;
   display: flex;
   gap: 5%;
+  margin: 5px 0 0 5px;
   align-items: center;
   text-transform: capitalize;
   cursor: pointer;
@@ -142,19 +150,21 @@
 }
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .message {
   font-size: 0.7rem;
-  margin-top: 5%;
   display: flex;
-  gap: 3%;
+  padding: 0 3% 0 5%;
 }
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message {
   display: flex;
   flex-direction: row;
 }
-.sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .underline_at {
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .text_h4 .underline_at {
   cursor: pointer;
 }
-.sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .underline_at:hover {
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .text_h4 .underline_at:hover {
   text-decoration: underline;
+}
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .text {
+  font-weight: 400;
 }
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .name_at {
   color: rgb(0, 132, 255);
@@ -167,7 +177,7 @@
 .sub_container_message .section_sub_replies_comment .card .container_replies {
   display: flex;
   gap: 5%;
-  margin: 2% 0 5% 10%;
+  margin: 2% 0 5% 1%;
 }
 .sub_container_message .section_sub_replies_comment .card .container_replies span[class=tool] {
   font-size: 0.7rem;

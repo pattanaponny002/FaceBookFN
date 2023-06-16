@@ -51,3 +51,16 @@ export const fadeIn_out = {
     opacity: 0,
   },
 };
+export const fadeInd_Right = {
+  hidden: {
+    opacity: 0,
+    x: 50,
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+  },
+  removed: {
+    opacity: 0,
+  },
+};

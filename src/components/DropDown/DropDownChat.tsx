@@ -39,7 +39,6 @@ const DropDownChat = ({
 // toggle,
 DropDownChatPRops) => {
   function handlerDropDownChat(e: MouseEvent) {
-    console.log("clicked");
     if (refDropDown.current) {
       !refDropDown.current.contains(e.target as Node) &&
         setToggle((prev) => false);

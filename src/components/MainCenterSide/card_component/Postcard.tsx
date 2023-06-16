@@ -23,6 +23,10 @@ import { REDUCER_USER } from "../../../reducers_utils/reducer_user";
 import { AnimatePresence, motion as m } from "framer-motion";
 import { REDUCER_DIALOGUE_POST_MESSAGE } from "../../../reducers_utils/reducer_dialogue_post";
 import { lstat } from "fs";
+import { chooseSentiment } from "../../UTIL_KEEP_STUFF";
+import { MainContextApi } from "../../../contextAPI/MainContextProvider";
+import { REDUCER_CURRENT_MAIN } from "../../../reducers_utils/reducer_mainuser";
+import { useNavigate } from "react-router-dom";
 interface PostCardProps {
   amount?: number;
   size?: number;
@@ -84,11 +88,9 @@ const Postcard = ({
 }: PostCardProps) => {
   const random = Math.round(Math.random() * amount + 1);
   const { user, Dispatch, user_information } = React.useContext(userContextApi);
-
   const { post_message, Dispatch_Post } = React.useContext(PostContextApi);
-  const textArray = new Array(random).fill(0);
-  const random_image = Math.round(Math.random() * 500);
-  const [PostMessageItem, setPostMessageItem] = React.useState<PostMessage>();
+  const { Dispatch_main } = React.useContext(MainContextApi);
+
   const [Data, setData] = React.useState<DataProps[]>();
   const [isLoading, setisLoading] = React.useState<boolean>(false);
   const [sentimentInformation, setSentimentInformation] =
@@ -106,17 +108,7 @@ const Postcard = ({
     React.useState<SentimentActive>();
   const [currentPostUser, setcurrentPostUser] =
     React.useState<userInformation>();
-  const [Activeemotions, setActiveemotions] = React.useState({
-    like: 0,
-    love: 0,
-    hug: 0,
-    laughing: 0,
-    sad: 0,
-    funny: 0,
-    greedy: 0,
-    cool: 0,
-    angry: 0,
-  });
+
   async function fetchPostUser() {
     if (post_item?.senderId) {
       const url =
@@ -176,66 +168,9 @@ const Postcard = ({
       const post: any[] = response.data.result;
 
       const amounts = post.length;
+
+      /// AMOUNT OF COMMENT
       setAmountComments((prev) => ({ ...amountComment, comments: amounts }));
-    }
-  }
-  function chooseSentiment(emotion: string) {
-    const sentiment = {
-      like: 0,
-      love: 0,
-      hug: 0,
-      laughing: 0,
-      sad: 0,
-
-      funny: 0,
-      greedy: 0,
-      cool: 0,
-      angry: 0,
-    };
-    switch (emotion) {
-      case "like":
-        return {
-          ...sentiment,
-          like: 1,
-        };
-      case "love":
-        return {
-          ...sentiment,
-          love: 1,
-        };
-
-      case "laughing":
-        return {
-          ...sentiment,
-          laughing: 1,
-        };
-      case "sad":
-        return {
-          ...sentiment,
-          sad: 1,
-        };
-      case "angry":
-        return {
-          ...sentiment,
-          angry: 1,
-        };
-      case "cool":
-        return {
-          ...sentiment,
-          cool: 1,
-        };
-      case "funny":
-        return {
-          ...sentiment,
-          funny: 1,
-        };
-      case "greedy":
-        return {
-          ...sentiment,
-          greedy: 1,
-        };
-      default:
-        return sentiment;
     }
   }
 
@@ -258,7 +193,6 @@ const Postcard = ({
       });
       if (response.status === 200) {
         const message = response.data.message;
-        alert(message);
       }
     } else {
       const data = {
@@ -275,7 +209,6 @@ const Postcard = ({
 
       if (response.status === 200) {
         const message = response.data.message;
-        alert(message);
         setAmountComments((prev) => ({
           ...prev,
           sentiments: prev.sentiments + 1,
@@ -294,7 +227,6 @@ const Postcard = ({
     });
     if (response.status === 200) {
       const message = response.data.message;
-      alert(message);
       setAmountComments((prev) => ({
         ...prev,
         sentiments: prev.sentiments - 1,
@@ -309,7 +241,7 @@ const Postcard = ({
     });
     if (response.status === 200) {
       const message = response.data.message;
-
+      //// AMOUNT OF  *** [LIKE ]*** // WRONG
       const result: DataSentiments[] = response.data.result;
       setAmountComments((prev) => ({
         ...prev,
@@ -321,29 +253,28 @@ const Postcard = ({
         (sentiments) => sentiments.username === user_information.username
       );
 
-      /// not number Element implicitly has an 'any' type because index expression is not of type 'number
+      ///get emoji === 1 in the database
       const emoji_ICON =
         find &&
         Object.keys(find.reactions).find(
           (emoji) => find.reactions[emoji] === 1
         );
-
+      //// gchoose
       const sentiment_emoji = emoji.find(
         (emode) => emode.text.toLowerCase() === emoji_ICON
       );
 
-      console.log("result", result);
-      /// like
+      /// LIKE EXIST ALREADY WITH USERNAME
       setactivesentiment((prev) => sentiment_emoji);
       ///find the list
 
+      // LIST NUMBERS BLACK PLATE
       const list = result.map((item, index) => ({
         username: item.username,
         reactions: Object.keys(item.reactions).find(
           (key) => item.reactions[key] === 1
         ),
       }));
-      console.log("list", list[0].reactions);
       list && setlistsentiment((prev) => list);
     }
   }
@@ -351,8 +282,6 @@ const Postcard = ({
     const emoj_image = emoji.find(
       (checked) => checked.text.toLocaleLowerCase() === text
     );
-    console.log("text", text);
-    console.log("emoj_image", emoj_image);
     return emoj_image?.image;
   }
   React.useEffect(() => {
@@ -369,11 +298,16 @@ const Postcard = ({
         setisLoading(true);
       }, 3500);
     }
-
     if (post_item?._id) {
       fetchSentiment();
     }
   }, []);
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (post_item?._id) {
+      fetchSentiment();
+    }
+  }, [post_item?._id]);
 
   React.useEffect(() => {
     if (post_item?._id) {
@@ -414,7 +348,18 @@ const Postcard = ({
               <div className="user_des">
                 <span className="des_name">
                   {currentPostUser ? (
-                    <span>{currentPostUser?.username}</span>
+                    <span
+                      className="profile_name"
+                      onClick={() => {
+                        Dispatch_main({
+                          type: REDUCER_CURRENT_MAIN.SET_MAIN_CURRENT_USER,
+                          payload: { ...currentPostUser }, // userInformation
+                        });
+                        navigate("/Main");
+                      }}
+                    >
+                      {currentPostUser?.username}
+                    </span>
                   ) : (
                     <span>DJON RB</span>
                   )}
@@ -515,7 +460,10 @@ const Postcard = ({
                   >
                     {listsentiment &&
                       listsentiment?.map((item, index) => (
-                        <div key={index} className="wrapper_list">
+                        <div
+                          key={index + item.username}
+                          className="wrapper_list"
+                        >
                           <span className="listname">{item.username}</span>
                           <span className="listname_reacttion">
                             {item.reactions}

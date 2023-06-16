@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   FormEvent,
   FormEventHandler,
+  createRef,
   useContext,
 } from "react";
 import "../STYLES/Home/Home.css";
@@ -39,17 +40,17 @@ const Home = () => {
     undefined
   );
 
-  const ref_dialogue = React.useRef<HTMLDivElement>(null);
+  const ref_dialogue = createRef<HTMLDivElement>();
   const { user, Dispatch, user_information } = useContext(userContextApi);
 
-  const refChatBox = React.useRef<HTMLDivElement>(null);
+  const refChatBox = createRef<HTMLDivElement>();
 
   const [toggleChatbox, settoggleChatbox] = React.useState<boolean>(false);
-
-  // React.useEffect(() => {
-  //   socket.emit("add_user", user_information);
-  //   return () => {};
-  // }, [user_information._id]);
+  // ERROR SOCKET HERE GET 400
+  React.useEffect(() => {
+    socket.emit("add_user", user_information);
+    return () => {};
+  }, [user_information._id]);
   return (
     <div className="container_Home">
       <DialoguePost

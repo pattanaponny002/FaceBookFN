@@ -23,7 +23,7 @@ import { userContextApi } from "../../contextAPI/UserContextProvider";
 import { MainContextApi } from "../../contextAPI/MainContextProvider";
 import { REDUCER_CURRENT_MAIN } from "../../reducers_utils/reducer_mainuser";
 import { REDUCER_CURRENT_INFORMATION } from "../../reducers_utils/reducer_info_utils";
-
+import { REDUCER_USER } from "../../reducers_utils/reducer_user";
 import { socket } from "../../socket";
 interface DropDownPRops {
   refRightDropDown: React.RefObject<HTMLDivElement>;
@@ -43,7 +43,7 @@ const DropDown = ({ refRightDropDown, dispatch, state }: DropDownPRops) => {
 
   const { current_user, Dispatch_main } = React.useContext(MainContextApi);
   const [Data, setData] = React.useState<DataProps[]>([]);
-  const { user_information } = React.useContext(userContextApi);
+  const { user_information, user, Dispatch } = React.useContext(userContextApi);
   const navigate = useNavigate();
   function NavigateMain() {
     dispatch({
@@ -134,6 +134,10 @@ const DropDown = ({ refRightDropDown, dispatch, state }: DropDownPRops) => {
                 onClick={() => {
                   socket.emit("logout");
                   navigate("/");
+                  Dispatch({
+                    type: REDUCER_USER.TOGGLE_CHATBOX,
+                    payload: { ...user, toggle_chat_box: false },
+                  });
                 }}
               >
                 <span className="wrapper_icon">

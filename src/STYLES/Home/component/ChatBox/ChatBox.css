@@ -94,6 +94,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding: 5% 0 10% 0;
 }
 .container_chat .section2::-webkit-scrollbar {
   background-color: #f0f2f5;

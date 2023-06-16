@@ -107,12 +107,46 @@ export const emoji_2 = [
 
 const xx = [
   {
-    master: "",
+    usernmae: "a",
     reaction: {
       like: 0,
+      love: 0,
+      hug: 1,
+      laughing: 0,
+    },
+  },
+  {
+    usernmae: "b",
+    reaction: {
+      like: 0,
+      love: 1,
+      hug: 0,
+      laughing: 0,
+    },
+  },
+  {
+    usernmae: "c",
+    reaction: {
+      like: 1,
       love: 0,
       hug: 0,
       laughing: 0,
     },
+  },
+];
+
+/// how to get
+const xx2 = [
+  {
+    usernmae: "a",
+    reaction: "hug",
+  },
+  {
+    usernmae: "b",
+    reaction: "love",
+  },
+  {
+    usernmae: "c",
+    reaction: "like",
   },
 ];

@@ -47,6 +47,10 @@
   align-items: center;
   gap: 10px;
 }
+.posting_user_container .posting_section_user .sub_section .user_des .des_name span[class=profile_name] {
+  font-weight: 600;
+  cursor: pointer;
+}
 .posting_user_container .posting_section_user .sub_section .user_des .des_name img {
   width: 20px;
   height: 20px;
@@ -201,6 +205,7 @@
   width: 90%;
   justify-content: space-evenly;
   color: gray;
+  gap: 1%;
 }
 .posting_user_container .posting_section_chat .wrapper_tools.like {
   border: 2px solid #f0f2f5;

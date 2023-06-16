@@ -85,7 +85,7 @@ const MessageCard = ({
         }}
       >
         <span className="text" style={{ color: isOwe ? "white" : "black" }}>
-          {isJustNow ? GPTText : item.text}
+          {item.text}
         </span>
       </div>
     </div>

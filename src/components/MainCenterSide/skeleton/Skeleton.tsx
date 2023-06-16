@@ -13,41 +13,41 @@ const Skeleton = ({ percentage, height = 850 }: SkeletonProps) => {
         </div>
         <div className="wrapper_desc">
           <p>
-            <div className="content_skeleton" />
+            <span className="content_skeleton" />
           </p>
           <p>
-            <div className="content_skeleton" />
+            <span className="content_skeleton" />
           </p>
         </div>
       </div>
       <div className="skeleton_section_text">
         <p>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </p>
         <p>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </p>
       </div>
       <div className="skeleton_section_image">
-        <div className="content_skeleton" />
+        <span className="content_skeleton" />
       </div>
       <div className="skeleton_section_tools">
         <span>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </span>
         <span>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </span>
       </div>
       <div className="skeleton_section_chat">
         <span>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </span>
         <span>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </span>
         <span>
-          <div className="content_skeleton" />
+          <span className="content_skeleton" />
         </span>
       </div>
     </div>

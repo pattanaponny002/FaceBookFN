@@ -12,9 +12,10 @@ $fb_color: rgb(0, 132, 255);
   min-height: 50px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
   .section_image_and_message {
     display: flex;
+    gap: 1%;
     .wrapper_image {
       width: 45px;
       height: 45px;
@@ -38,7 +39,7 @@ $fb_color: rgb(0, 132, 255);
         min-height: 50px;
         word-break: break-all;
         display: flex;
-        padding: 2% 0 1% 2%;
+        padding: 2%;
         gap: 10%;
         border-radius: 15px;
         background-color: $bg;
@@ -47,6 +48,7 @@ $fb_color: rgb(0, 132, 255);
           font-size: 0.8rem;
           display: flex;
           gap: 5%;
+          font-weight: 700;
           align-items: center;
           text-transform: capitalize;
           cursor: pointer;
@@ -67,10 +69,10 @@ $fb_color: rgb(0, 132, 255);
       .container_replies {
         display: flex;
         gap: 2%;
-        width: 80%;
-
+        width: 100%;
+        margin-top: 1%;
         span[class="tool"] {
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           cursor: pointer;
         }
         span[class="tool"]:hover {
@@ -107,39 +109,43 @@ $fb_color: rgb(0, 132, 255);
       span[class="message_card"] {
         min-width: 200px;
         min-height: 50px;
-
         word-break: break-all;
         display: flex;
-        padding: 5%;
-        gap: 10%;
+        padding: 3%;
         border-radius: 15px;
         background-color: $bg;
         flex-direction: column;
         position: relative;
         .sub_wrapper_image {
+          left: -17%;
+          position: absolute;
           width: 35px;
           height: 35px;
           border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;
-          position: absolute;
-          top: 5px;
-          right: 5%;
+          cursor: pointer;
+          transition: transform 0.5s;
           img {
             width: 35px;
             height: 35px;
             border-radius: 50%;
           }
         }
+        .sub_wrapper_image:hover {
+          transform: scale(1.2);
+        }
         .name {
-          font-size: 0.8rem;
+          flex: 1;
+          font-weight: 800;
+          font-size: 0.9rem;
           display: flex;
           gap: 5%;
+          margin: 5px 0 0 5px;
           align-items: center;
           text-transform: capitalize;
           cursor: pointer;
-
           img {
             width: 20px;
             height: 20px;
@@ -148,19 +154,24 @@ $fb_color: rgb(0, 132, 255);
         .name:hover {
           text-decoration: underline;
         }
+
         .message {
           font-size: 0.7rem;
-          margin-top: 5%;
           display: flex;
-          gap: 3%;
+          padding: 0 3% 0 5%;
           .wrapper_message {
             display: flex;
             flex-direction: row;
-            .underline_at {
-              cursor: pointer;
+            .text_h4 {
+              .underline_at {
+                cursor: pointer;
+              }
+              .underline_at:hover {
+                text-decoration: underline;
+              }
             }
-            .underline_at:hover {
-              text-decoration: underline;
+            .text {
+              font-weight: 400;
             }
             .name_at {
               color: $fb_color;
@@ -176,7 +187,8 @@ $fb_color: rgb(0, 132, 255);
       .container_replies {
         display: flex;
         gap: 5%;
-        margin: 2% 0 5% 10%;
+        margin: 2% 0 5% 1%;
+
         span[class="tool"] {
           font-size: 0.7rem;
           cursor: pointer;
