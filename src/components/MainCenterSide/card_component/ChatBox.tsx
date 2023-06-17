@@ -144,9 +144,6 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
       }
     }
     function socketArraivalMessage(arrailvalMessage: MessageProps) {
-      alert("Arraivalmessage");
-      console.log("message", arrailvalMessage.text);
-
       setdisplayMessage((prev) => [...prev, arrailvalMessage]);
     }
     React.useEffect(() => {
