@@ -38,6 +38,20 @@ import { PostMessage } from "../contextAPI/PostContextProvider";
 import { CircularProgress } from "@mui/material";
 import DialoguePost from "../components/MainCenterSide/card_component/DialoguePost";
 import bg from "../assets/bg/bg.jpg";
+import camera from "../assets/logos/camera (2).png";
+import { drop_down, flipOver } from "../motion";
+import { exit } from "process";
+import {
+  uploadBytesResumable,
+  ref as REF,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
+import { storage } from "../firebase_config";
+import { REDUCER_INFORMATION } from "../reducers_utils/reducer_register_ang_login";
+import { REDUCER_CURRENT_INFORMATION } from "../reducers_utils/reducer_info_utils";
+import done from "../assets/logo_dialogue_tools/done.png";
+import { useNavigate } from "react-router-dom";
 interface slider {
   backdrop: string;
   profile: string;
@@ -56,10 +70,11 @@ export interface MembersProps {
 }
 const Main = () => {
   const random = Math.round(Math.random() * 1 + 5);
-
+  const navigate = useNavigate();
   const [Data, setData] = React.useState<DataPRops>();
   const ref_dialogue = React.useRef<HTMLDivElement>(null);
-  const { user, Dispatch, user_information } = React.useContext(userContextApi);
+  const { user, Dispatch, user_information, Dispatch_info } =
+    React.useContext(userContextApi);
   const { current_user, Dispatch_main } = React.useContext(MainContextApi);
 
   const { dataChat, Dispatch_chatbox } = React.useContext(ChatBoxContextApi);
@@ -70,7 +85,10 @@ const Main = () => {
   const [followingMember, setfollowingMember] = React.useState<MembersProps[]>(
     []
   );
-
+  const [profileURL, setprofileURL] = React.useState<File | null>(null);
+  const [BackdropURL, setBackdropURL] = React.useState<File | null>(null);
+  const [mouseChangeprofile, setmouseChangeprofile] =
+    React.useState<boolean>(false);
   const [displayPostMessage, setdisplayPostMessage] = React.useState<
     PostMessage[]
   >([]);
@@ -117,7 +135,34 @@ const Main = () => {
       return;
     }
   }
+  async function onChangeProfile() {
+    const url = process.env.REACT_APP_PORT + "/user/api/updateProfile";
 
+    const refStorageRef = REF(storage, "/Potatoes/" + Date.now().toString());
+    if (profileURL) {
+      await uploadBytesResumable(refStorageRef, profileURL);
+      const downloadURL = await getDownloadURL(refStorageRef);
+      const data = {
+        username: user_information.username,
+        phone_number: user_information.phone_number,
+        photoURL: downloadURL,
+      };
+
+      const response = await Axios(url, {
+        method: "patch",
+        headers: { "Content-Type": "application/json" },
+        data,
+      });
+      if (response.status === 200) {
+        Dispatch_info({
+          type: REDUCER_CURRENT_INFORMATION.SET_UPDATE_PROFILE_PICTURE,
+          payload: { ...user_information, photoURL: downloadURL },
+        });
+        setprofileURL((prev) => null);
+        navigate("/Main");
+      }
+    }
+  }
   async function handlerUnFollowFriend() {
     setisLoading(true);
     const url = process.env.REACT_APP_PORT + "/friend/api/delete";
@@ -267,18 +312,68 @@ const Main = () => {
         <div className="section1">
           <img src={bg} alt="" />
         </div>
+
         <div className="section2">
           <div className="container">
             <div className="box1">
-              <div className="wrapper_image_profile">
+              <div
+                className="wrapper_image_profile"
+                onMouseEnter={() => setmouseChangeprofile((prev) => true)}
+                onMouseLeave={() => setmouseChangeprofile((prev) => false)}
+              >
                 <img
                   src={
-                    current_user.photoURL
-                      ? current_user.photoURL
-                      : Data?.testArray_slider[0].profile
+                    profileURL
+                      ? URL.createObjectURL(profileURL)
+                      : current_user._id === user_information._id
+                      ? user_information.photoURL
+                      : current_user.photoURL
                   }
                   alt=""
                 />
+
+                <input
+                  type="file"
+                  id="change_profile_image"
+                  onChange={(e) =>
+                    setprofileURL((prev) =>
+                      e.target.files ? e.target.files[0] : null
+                    )
+                  }
+                />
+                <AnimatePresence>
+                  {mouseChangeprofile &&
+                    user_information._id === current_user._id && (
+                      <m.label
+                        variants={drop_down}
+                        initial="hidden"
+                        animate="show"
+                        exit={"removed"}
+                        className="change_profile_image"
+                        htmlFor="change_profile_image"
+                      >
+                        <img
+                          src={camera}
+                          alt="profile"
+                          className="profile_icon"
+                        />
+                      </m.label>
+                    )}
+                </AnimatePresence>
+                <AnimatePresence>
+                  {profileURL && (
+                    <m.label
+                      onClick={onChangeProfile}
+                      variants={drop_down}
+                      initial="hidden"
+                      animate="show"
+                      exit={"removed"}
+                      className="change_profile_image submit"
+                    >
+                      <img src={done} alt="profile" className="profile_icon" />
+                    </m.label>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
             <div className="box2">

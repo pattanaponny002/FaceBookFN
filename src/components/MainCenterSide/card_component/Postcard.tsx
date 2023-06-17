@@ -398,14 +398,14 @@ const Postcard = ({
           ) : (
             <div className="posting_section_text">{textContext}</div>
           )}
-          {bigsize ? (
+          {post_item?.photoURL ? (
             <div
               className="posting_section_image"
               style={{ padding: "0", height, width: "100%" }}
             >
               <div className="wrapper_images">
                 <img
-                  src={backdrop}
+                  src={post_item?.photoURL}
                   loading="lazy"
                   style={{ objectFit: "cover", height, width: 650 }}
                 />

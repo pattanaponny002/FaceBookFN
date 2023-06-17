@@ -67,6 +67,7 @@ const MainCenter = () => {
 
     if (response.status === 200) {
       const posts = response.data.result;
+      console.log("POSTMESSAGE SEE", posts);
       setdisplayPostMessage((prev) => posts);
     } else {
       const error = response.data.err;

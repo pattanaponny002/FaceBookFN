@@ -84,11 +84,38 @@
   justify-content: center;
   align-items: center;
   border: 5px solid white;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.5s;
 }
 .container_main_content .profile_introduction .section2 .container .box1 .wrapper_image_profile img {
   width: 200px;
   height: 200px;
   border-radius: 50%;
+}
+.container_main_content .profile_introduction .section2 .container .box1 .wrapper_image_profile input[id=change_profile_image] {
+  display: none;
+}
+.container_main_content .profile_introduction .section2 .container .box1 .wrapper_image_profile .change_profile_image {
+  width: 30px;
+  height: 30px;
+  border-radius: 13px;
+  background-color: #f0f2f5;
+  cursor: pointer;
+  position: absolute;
+  right: -10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container_main_content .profile_introduction .section2 .container .box1 .wrapper_image_profile .change_profile_image img[class=profile_icon] {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.container_main_content .profile_introduction .section2 .container .box1 .wrapper_image_profile .submit {
+  bottom: 20%;
+  right: 0;
 }
 .container_main_content .profile_introduction .section2 .container .box2 {
   flex: 1.5;

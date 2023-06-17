@@ -64,3 +64,18 @@ export const fadeInd_Right = {
     opacity: 0,
   },
 };
+export const flipOver = {
+  hidden: {
+    opacity: 0,
+    rotateY: "90deg",
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+    rotateY: "180deg",
+  },
+  removed: {
+    opacity: 0,
+    rotateY: "270deg",
+  },
+};

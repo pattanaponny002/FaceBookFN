@@ -19,7 +19,7 @@ import Axios from "axios";
 import { patterns_check } from "../assets/regex_utils";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase_config";
-import { RegisterApi } from "../assets/classes/register_utils";
+import { RegisterApi } from "../assets/classes/register_utils_and_chatbox";
 import { REDUCER_CURRENT_INFORMATION } from "../reducers_utils/reducer_info_utils";
 import { CircularProgress } from "@mui/material";
 interface MessageProps {

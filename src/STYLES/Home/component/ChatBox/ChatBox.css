@@ -3,7 +3,7 @@
   border-radius: 15px;
   position: fixed;
   bottom: 0;
-  right: 5%;
+  right: 30%;
   width: 300px;
   height: 380px;
   padding: 10px;
@@ -82,19 +82,42 @@
 .container_chat .section2 {
   flex: 4;
   position: relative;
-  overflow-y: auto;
   display: flex;
+  overflow-y: scroll;
+}
+.container_chat .section2 .previewImage {
+  position: fixed;
+  width: 280px;
+  bottom: 5%;
+  height: 120px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.container_chat .section2 .previewImage img[class=image] {
+  margin-left: 5%;
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  opacity: 1;
+  box-shadow: 0 2px 10px white;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.container_chat .section2 .previewImage img[class=image]:hover {
+  opacity: 0.8;
+  transform: translateY(-5%);
 }
 .container_chat .section2 .container_message {
-  position: absolute;
   min-height: 270px;
-  width: 95%;
+  width: 100%;
   flex-direction: column;
   gap: 0.5rem;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  padding: 5% 0 10% 0;
 }
 .container_chat .section2::-webkit-scrollbar {
   background-color: #f0f2f5;
@@ -111,7 +134,17 @@
   justify-self: center;
   align-items: center;
 }
-.container_chat .section3 input {
+.container_chat .section3 input[id=input_image] {
+  display: none;
+}
+.container_chat .section3 .send.img {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+}
+.container_chat .section3 input[class=text] {
   width: 120px;
   font-family: "Poppins", sans-serif;
   padding-left: 3%;

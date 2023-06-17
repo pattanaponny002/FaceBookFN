@@ -25,6 +25,7 @@ $bg: #f0f2f5;
     align-items: center;
     font-size: 2rem;
     color: white;
+    z-index: 99;
   }
   .dialogue_card {
     pointer-events: fill;
@@ -171,6 +172,26 @@ $bg: #f0f2f5;
         display: flex;
         justify-content: space-between;
         height: 60px;
+        position: relative;
+        .previewImage {
+          position: absolute;
+          top: -90%;
+          width: 100px;
+          height: 100px;
+          left: 10%;
+          img[class="img_post"] {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            opacity: 1;
+            border-radius: 15px;
+            transition: opacity 0.5s, transform 0.5s;
+          }
+          img[class="img_post"]:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 10px pink;
+          }
+        }
         .container_option_tools {
           display: flex;
           width: 100%;
@@ -202,10 +223,16 @@ $bg: #f0f2f5;
         border-radius: 15px;
         height: 60px;
         align-items: center;
+
         .container_option_tools {
           display: flex;
           width: 90%;
           justify-content: space-between;
+          position: relative;
+
+          input[id="dialogue_input"] {
+            display: none;
+          }
           span[class="adding"] {
             flex: 1;
           }

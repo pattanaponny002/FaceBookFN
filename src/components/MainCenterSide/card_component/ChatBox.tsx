@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Ref } from "react";
+import React, { ChangeEvent, Ref, useState } from "react";
 import "../../../STYLES/Home/component/ChatBox/ChatBox.css";
 import MessageCard from "./MessageCard";
 import { AnimatePresence } from "framer-motion";
@@ -32,6 +32,15 @@ import {
   icon_input_tools,
   icon_tools,
 } from "../../UTIL_KEEP_STUFF";
+import { drop_down } from "../../../motion";
+import {
+  uploadBytesResumable,
+  ref as REF,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
+import { storage } from "../../../firebase_config";
+import { MessageChatBoxApi } from "../../../assets/classes/register_utils_and_chatbox";
 export interface MessageProps {
   senderId: string;
   receiverId: string;
@@ -59,7 +68,7 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
 
     const [isOnline, setisOnline] = React.useState<boolean>(false);
     const [message, setMessage] = React.useState<string>("");
-
+    const [image_URL, setimage_URL] = React.useState<File | null>(null);
     //message
     function sendChatBoxMessage(e: ChangeEvent<HTMLInputElement>) {
       setMessage((prev) => e.target.value);
@@ -67,33 +76,31 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
 
     async function SendMessage() {
       if (dataChat.chatuser) {
-        const Message: MessageProps = {
-          receiverId: user_information._id,
-          senderId: dataChat.chatuser._id,
-          text: message,
-          sendAt: new Date().toLocaleString("en-US", {
-            day: "numeric",
-            month: "short",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-          }),
-          conversationId: dataChat.conversationId,
-        };
-
+        const refStorage = REF(
+          storage,
+          "/Potatoes/ChatBox/" + Date.now().toString()
+        );
         const url = process.env.REACT_APP_PORT + "/message/api/add";
-        const response = await Axios(url, {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          data: Message,
-        });
-
-        if (response.status === 200) {
-          const message = response.data.message;
-          socket.emit("add_message", Message);
-          setdisplayMessage((prev) => [...prev, Message]);
+        const messageApi = new MessageChatBoxApi(
+          refStorage,
+          url,
+          image_URL,
+          message,
+          user_information,
+          dataChat
+        );
+        //return result
+        const { result, CallbackMessage } =
+          await messageApi.handlerSendMessage();
+        if (result === true && CallbackMessage) {
+          socket.emit("add_message", CallbackMessage);
+          setdisplayMessage((prev) => [...prev, CallbackMessage]);
           setMessage((prev) => "");
+          setimage_URL((prev) => null);
+        } else {
+          console.log("Failed sending message");
         }
+        ///dataChat
       }
     }
 
@@ -137,6 +144,7 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
       }
     }
     function socketArraivalMessage(arrailvalMessage: MessageProps) {
+      alert("Arraivalmessage");
       console.log("message", arrailvalMessage.text);
 
       setdisplayMessage((prev) => [...prev, arrailvalMessage]);
@@ -157,9 +165,10 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
     }, [dataChat.conversationId, user_information._id]);
 
     React.useEffect(() => {
-      socket.on("get_message", socketArraivalMessage);
+      console.log("come socket");
+      socket.on("get_to_message", socketArraivalMessage);
       return () => {
-        socket.off("get_message", socketArraivalMessage);
+        socket.off("get_to_message", socketArraivalMessage);
       };
     }, [socket]);
 
@@ -173,7 +182,7 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
             variants={animation_translateY}
             initial="hidden"
             animate="show"
-            exit="remove"
+            exit="removed"
           >
             {/* Profile contactor */}
             <div className="section1">
@@ -210,7 +219,28 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
                   ))}
               </div>
             </div>
+
             <div className="section2">
+              <AnimatePresence>
+                {image_URL && (
+                  <m.div
+                    onClick={() => setimage_URL((prev) => null)}
+                    variants={animation_translateY}
+                    initial={"hidden"}
+                    animate="show"
+                    exit={"removed"}
+                    className="previewImage"
+                  >
+                    <img
+                      className="image"
+                      src={
+                        image_URL ? URL.createObjectURL(image_URL) : undefined
+                      }
+                      alt=""
+                    />
+                  </m.div>
+                )}
+              </AnimatePresence>
               <div className="container_message">
                 {displayMessage &&
                   displayMessage.map((item, index) => {
@@ -247,27 +277,46 @@ const ChatBox = React.forwardRef<HTMLDivElement, ChatBoxProps>(
               </div>
             </div>
             {/* Input DisplayMessage */}
+
             <div className="section3">
               {icon_input_tools &&
-                icon_input_tools.map((item, index) => (
-                  <span key={index} className="send" onClick={SendMessage}>
-                    {Icon_input_tools(item, message)}
-                  </span>
-                ))}
+                icon_input_tools.map((item, index) => {
+                  return Icon_input_tools(item, message);
+                })}
+              <input
+                type="file"
+                id="input_image"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setimage_URL(e.target.files[0]);
+                  } else {
+                    setimage_URL(null);
+                  }
+                }}
+              />
+              <label className="send img" htmlFor="input_image">
+                <AiFillFileImage
+                  style={{ display: message && "none" }}
+                  size={20}
+                  color={image_URL ? "rgb(0, 132, 255)" : "crimson"}
+                  className="icon"
+                />
+              </label>
               <input
                 style={{ width: message && "250px" }}
                 type="text"
                 placeholder="@Aa"
+                className="text"
                 value={message}
                 onChange={sendChatBoxMessage}
               />
 
-              {message ? (
+              {message || image_URL ? (
                 <m.span className="send" onClick={SendMessage}>
                   <IoMdSend color="rgb(0, 132, 255)" size={20} />
                 </m.span>
               ) : (
-                <m.span className="send" onClick={SendMessage}>
+                <m.span className="send">
                   <BiMicrophone color="rgb(0, 132, 255)" size={20} />
                 </m.span>
               )}

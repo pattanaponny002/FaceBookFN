@@ -64,7 +64,6 @@ const FriendCard = ({ item, userID, onlineUsers, index }: FriendCardProps) => {
         /// this is on the disffernce state
         if (response.status === 200) {
           const conversation = response.data.result;
-          console.log("conversationFriend", conversation);
 
           ///find not findOne for checking so we would like to add [0]
           ///?
@@ -84,7 +83,6 @@ const FriendCard = ({ item, userID, onlineUsers, index }: FriendCardProps) => {
                 },
               },
             });
-            console.log("DataChat newFriend", conversation);
             socket.emit("join_room", conversation);
           }
         }

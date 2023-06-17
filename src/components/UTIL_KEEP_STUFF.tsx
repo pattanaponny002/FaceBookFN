@@ -25,6 +25,7 @@ import {
   MdBatchPrediction,
 } from "react-icons/md";
 import { sub_items } from "./DropDown/Card/CardDropDown";
+import { spawn } from "child_process";
 export const icon_tools = [
   "IoMdCall",
   "BsCameraVideoFill",
@@ -37,28 +38,41 @@ export const icon_input_tools = [
   "AiOutlineFileGif",
   "BsFillEmojiSmileFill",
 ];
+export const icon_input_tools_mp = [
+  "AiOutlineFileGif",
+  "BsFillEmojiSmileFill",
+  "AiFillPlusCircle",
+];
+export const icon_input_tools_dp = [
+  "AiOutlineFileGif",
+  "BsFillEmojiSmileFill",
+  "AiFillPlusCircle",
+];
 export function Icon_input_tools_mp(icon: string) {
   switch (icon) {
     case "AiFillPlusCircle":
       return (
-        <AiFillPlusCircle
-          size={25}
-          // color="rgb(0, 132, 255)"
-          className="icon"
-        />
+        <span className="wrapper_icon_tools">
+          <AiFillPlusCircle
+            size={25}
+            // color="rgb(0, 132, 255)"
+            className="icon"
+          />
+        </span>
       );
-    case "AiFillFileImage":
-      return (
-        <AiFillFileImage
-          // style={{ display: "" && "none" }}
-          size={25}
-          className="icon"
-        />
-      );
+
     case "AiOutlineFileGif":
-      return <AiOutlineFileGif size={25} className="icon" />;
+      return (
+        <span className="wrapper_icon_tools">
+          <AiOutlineFileGif size={25} className="icon" />
+        </span>
+      );
     case "BsFillEmojiSmileFill":
-      return <BsFillEmojiSmileFill size={25} className="icon" />;
+      return (
+        <span className="wrapper_icon_tools">
+          <BsFillEmojiSmileFill size={25} className="icon" />
+        </span>
+      );
 
     default:
       return null;
@@ -387,34 +401,46 @@ export function Icon_input_tools(icon: string, message: string) {
   switch (icon) {
     case "AiFillPlusCircle":
       return (
-        <AiFillPlusCircle size={20} color="rgb(0, 132, 255)" className="icon" />
+        <span className="send">
+          <AiFillPlusCircle
+            size={20}
+            color="rgb(0, 132, 255)"
+            className="icon"
+          />
+        </span>
       );
-    case "AiFillFileImage":
-      return (
-        <AiFillFileImage
-          style={{ display: message && "none" }}
-          size={20}
-          color="rgb(0, 132, 255)"
-          className="icon"
-        />
-      );
+    // case "AiFillFileImage":
+    //   return (
+    //     <span className="send">
+    //       <AiFillFileImage
+    //         style={{ display: message && "none" }}
+    //         size={20}
+    //         color="rgb(0, 132, 255)"
+    //         className="icon"
+    //       />
+    //     </span>
+    //   );
     case "AiOutlineFileGif":
       return (
-        <AiOutlineFileGif
-          style={{ display: message && "none" }}
-          size={20}
-          color="rgb(0, 132, 255)"
-          className="icon"
-        />
+        <span className="send">
+          <AiOutlineFileGif
+            style={{ display: message && "none" }}
+            size={20}
+            color="rgb(0, 132, 255)"
+            className="icon"
+          />
+        </span>
       );
     case "BsFillEmojiSmileFill":
       return (
-        <BsFillEmojiSmileFill
-          style={{ display: message && "none" }}
-          size={20}
-          color="rgb(0, 132, 255)"
-          className="icon"
-        />
+        <span className="send">
+          <BsFillEmojiSmileFill
+            style={{ display: message && "none" }}
+            size={20}
+            color="rgb(0, 132, 255)"
+            className="icon"
+          />
+        </span>
       );
 
     default:
@@ -424,29 +450,23 @@ export function Icon_input_tools(icon: string, message: string) {
 const color_gr = "gray";
 export function Icon_input_tools_dp(icon: string, size: number) {
   switch (icon) {
-    case "AiFillPlusCircle":
-      return (
-        <AiFillPlusCircle
-          size={size}
-          // color="rgb(0, 132, 255)"
-          color={color_gr}
-          className="icon"
-        />
-      );
-    case "AiFillFileImage":
-      return (
-        <AiFillFileImage
-          // style={{ display: "" && "none" }}
-          size={size}
-          color={color_gr}
-          className="icon"
-        />
-      );
     case "AiOutlineFileGif":
-      return <AiOutlineFileGif size={size} color={color_gr} className="icon" />;
+      return (
+        <span className="wrapper_icon_tools">
+          <AiOutlineFileGif size={size} className="icon" />
+        </span>
+      );
     case "BsFillEmojiSmileFill":
       return (
-        <BsFillEmojiSmileFill size={size} color={color_gr} className="icon" />
+        <span className="wrapper_icon_tools">
+          <BsFillEmojiSmileFill size={size} className="icon" />
+        </span>
+      );
+    case "AiFillPlusCircle":
+      return (
+        <span className="wrapper_icon_tools">
+          <AiFillPlusCircle size={size} className="icon" />
+        </span>
       );
 
     default:

@@ -28,7 +28,8 @@
   flex-direction: column;
 }
 .sub_container_message .section_image_and_message .container_description span[class=message_card] {
-  width: 150px;
+  min-width: 150px;
+  max-width: 200px;
   min-height: 50px;
   word-break: break-all;
   display: flex;
@@ -59,6 +60,18 @@
   margin-top: 5%;
   margin-left: 5%;
 }
+.sub_container_message .section_image_and_message .container_description span[class=message_card] .wrapper_photo {
+  margin-top: 5%;
+  width: 180px;
+  height: 150px;
+  align-self: center;
+  border-radius: 15px;
+}
+.sub_container_message .section_image_and_message .container_description span[class=message_card] .wrapper_photo img {
+  width: 180px;
+  height: 150px;
+  border-radius: 15px;
+}
 .sub_container_message .section_image_and_message .container_description .container_replies {
   display: flex;
   gap: 2%;
@@ -80,7 +93,7 @@
   font-size: 0.8rem;
   cursor: pointer;
   color: gray;
-  margin: 0 0 0 8%;
+  margin: 0 0 0 9%;
 }
 .sub_container_message .comment:hover {
   text-decoration: underline;
@@ -174,6 +187,17 @@
 .sub_container_message .section_sub_replies_comment .card span[class=message_card] .message .wrapper_message .name_at:hover {
   text-decoration: underline;
 }
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .wrapper_imageURL {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+  align-self: center;
+}
+.sub_container_message .section_sub_replies_comment .card span[class=message_card] .wrapper_imageURL img {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+}
 .sub_container_message .section_sub_replies_comment .card .container_replies {
   display: flex;
   gap: 5%;
@@ -201,6 +225,34 @@
   min-height: 120px;
   padding: 5% 0 2% 2%;
   max-width: 550px;
+  position: relative;
+}
+.sub_container_message .section_sub_comment .previewImage {
+  top: -75%;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  animation: rotateY 5s infinite linear alternate;
+}
+.sub_container_message .section_sub_comment .previewImage img[class=imageInput] {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.sub_container_message .section_sub_comment .previewImage img[class=imageInput]:hover {
+  opacity: 0.8;
+}
+@keyframes rotateY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
 }
 .sub_container_message .section_sub_comment .wrapper_image {
   width: 45px;
@@ -237,6 +289,9 @@
   display: flex;
   gap: 5px;
   align-items: center;
+}
+.sub_container_message .section_sub_comment .sub_container_tools .container_input_tools input[id=sub_input_image] {
+  display: none;
 }
 .sub_container_message .section_sub_comment .sub_container_tools .container_input_tools .wrapper_icon_tools {
   cursor: pointer;

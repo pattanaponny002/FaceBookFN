@@ -17,6 +17,7 @@
   align-items: center;
   font-size: 2rem;
   color: white;
+  z-index: 99;
 }
 .dialogure .dialogue_card {
   pointer-events: fill;
@@ -163,6 +164,26 @@
   display: flex;
   justify-content: space-between;
   height: 60px;
+  position: relative;
+}
+.dialogure .dialogue_card .dialogue_posting_content .profile_option .previewImage {
+  position: absolute;
+  top: -90%;
+  width: 100px;
+  height: 100px;
+  left: 10%;
+}
+.dialogure .dialogue_card .dialogue_posting_content .profile_option .previewImage img[class=img_post] {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  opacity: 1;
+  border-radius: 15px;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.dialogure .dialogue_card .dialogue_posting_content .profile_option .previewImage img[class=img_post]:hover {
+  opacity: 0.8;
+  box-shadow: 0 0 10px pink;
 }
 .dialogure .dialogue_card .dialogue_posting_content .profile_option .container_option_tools {
   display: flex;
@@ -199,6 +220,10 @@
   display: flex;
   width: 90%;
   justify-content: space-between;
+  position: relative;
+}
+.dialogure .dialogue_card .dialogue_posting_content .profile_option_tools .container_option_tools input[id=dialogue_input] {
+  display: none;
 }
 .dialogure .dialogue_card .dialogue_posting_content .profile_option_tools .container_option_tools span[class=adding] {
   flex: 1;

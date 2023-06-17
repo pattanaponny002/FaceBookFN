@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import "../../../STYLES/Home/component/MessageCard/MessageCard.css";
 import { MessageProps } from "./ChatBox";
 import { userContextApi } from "../../../contextAPI/UserContextProvider";
+import bg from "../../../assets/bg/bg.jpg";
 interface MessageCardProps {
   item: MessageProps;
   index: number;
@@ -84,9 +85,16 @@ const MessageCard = ({
           backgroundColor: isOwe ? "rgb(0, 132, 255)" : "#E4E6EB",
         }}
       >
-        <span className="text" style={{ color: isOwe ? "white" : "black" }}>
-          {item.text}
-        </span>
+        {item.text && (
+          <span className="text" style={{ color: isOwe ? "white" : "black" }}>
+            {item.text}
+          </span>
+        )}
+        {item.photoURL && (
+          <div className="wrapper_photoURL">
+            <img src={item.photoURL} alt="" />
+          </div>
+        )}
       </div>
     </div>
   );

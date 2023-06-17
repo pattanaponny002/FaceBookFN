@@ -81,6 +81,7 @@ $fb_color: rgba(45, 106, 238, 1);
           align-items: flex-start;
           position: relative;
           min-height: 140px;
+
           .wrapper_image_profile {
             width: 200px;
             height: 200px;
@@ -90,10 +91,37 @@ $fb_color: rgba(45, 106, 238, 1);
             justify-content: center;
             align-items: center;
             border: 5px solid white;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s;
             img {
               width: 200px;
               height: 200px;
               border-radius: 50%;
+            }
+            input[id="change_profile_image"] {
+              display: none;
+            }
+            .change_profile_image {
+              width: 30px;
+              height: 30px;
+              border-radius: 13px;
+              background-color: $bg;
+              cursor: pointer;
+              position: absolute;
+              right: -10%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              img[class="profile_icon"] {
+                width: 20px;
+                height: 20px;
+                transition: opacity 0.5s, transform 0.5s;
+              }
+            }
+            .submit {
+              bottom: 20%;
+              right: 0;
             }
           }
         }

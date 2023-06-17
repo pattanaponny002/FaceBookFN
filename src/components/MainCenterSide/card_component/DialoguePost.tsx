@@ -34,6 +34,7 @@ import {
   animate_translateY,
   fadeIn_out,
   animate_translateY_reverse,
+  flipOver,
 } from "../../../motion";
 import Skeleton from "../skeleton/Skeleton";
 import MediumPostCard from "./MediumPostCard";
@@ -42,8 +43,17 @@ import Axios from "axios";
 import {
   Icon_input_tools,
   icon_input_tools,
+  icon_input_tools_dp,
   Icon_input_tools_dp,
 } from "../../UTIL_KEEP_STUFF";
+import {
+  uploadBytesResumable,
+  ref as REF,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
+import { storage } from "../../../firebase_config";
+import { Dialogue_api } from "../../../assets/classes/dialogue_post_api";
 interface DialogueProps {
   user: userProps;
   toggle?: boolean | undefined;
@@ -61,7 +71,7 @@ export interface DisplayMessageProps {
   username: string;
 
   post_id: string;
-  imageURL?: string[];
+  imageURL?: string;
 }
 const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
   const [isLoading, setisLoading] = React.useState<boolean>(false);
@@ -73,7 +83,7 @@ const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
   const { post_message } = React.useContext(PostContextApi);
   const [userPost, setuserPost] = React.useState<userInformation>();
   const [text, setText] = React.useState<string>("");
-
+  const [image_URL, setimage_URL] = React.useState<File | null>(null);
   const refDialogue = React.useRef<HTMLDivElement>(null);
 
   function closeDialoguePost(e: React.MouseEvent<HTMLDivElement>) {
@@ -87,36 +97,39 @@ const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
       });
     }
   }
-
+  /// sending massge
   async function onSendMessage(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
+
     if (user_information && post_message._id) {
       callbackIsLoading(true);
-      const messagePost: DisplayMessageProps = {
-        post_id: post_message._id,
-        username: user_information.username,
-        text,
-        senderId: user_information._id,
-        sendAt: new Date().getTime(),
-        photoURL: user_information?.photoURL,
-      };
-
       const url = process.env.REACT_APP_PORT + "/chatpost/api/add";
+      const refStorage = REF(
+        storage,
+        "/Potatoes/DialoguePost/" + Date.now().toString()
+      );
 
-      const response = await Axios(url, {
-        method: "post",
-        data: messagePost,
-        headers: { "Content-Type": "application/json" },
-      });
+      const dialogueApi = new Dialogue_api(
+        url,
+        image_URL,
+        refStorage,
+        post_message,
+        user_information,
+        text
+      );
 
-      if (response.status === 200) {
-        const arraivalMessage = response.data.result;
+      const { result, arraivalMessage } =
+        await dialogueApi.handlerDialoguePost();
+
+      if (result === true && arraivalMessage) {
         setTimeout(() => {
           setdisplayMessagePost((prev) => [...prev, arraivalMessage]);
           callbackIsLoading(false);
           setText("");
+          setimage_URL((prev) => null);
         }, 500);
       }
+      ///
     }
   }
 
@@ -334,6 +347,24 @@ const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
                       className="wrapper_text_area"
                       onSubmit={onSendMessage}
                     >
+                      <AnimatePresence>
+                        {image_URL && (
+                          <m.div
+                            onClick={() => setimage_URL((prev) => null)}
+                            variants={flipOver}
+                            initial="hidden"
+                            animate="show"
+                            exit={"removed"}
+                            className="preview_image"
+                          >
+                            <img
+                              src={URL.createObjectURL(image_URL)}
+                              alt=""
+                              className="image_floting"
+                            />
+                          </m.div>
+                        )}
+                      </AnimatePresence>
                       <textarea
                         value={text}
                         autoFocus={true}
@@ -341,13 +372,26 @@ const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
                         className="textarea"
                         placeholder="@write what you are thinking..."
                       />
+                      <input
+                        type="file"
+                        id="input_image"
+                        onChange={(e) =>
+                          setimage_URL((prev) =>
+                            e.target.files ? e?.target?.files[0] : null
+                          )
+                        }
+                      />
                       <div className="container_input_tools">
-                        {icon_input_tools &&
-                          icon_input_tools.map((item, index) => (
-                            <span key={index} className="wrapper_icon_tools">
-                              {Icon_input_tools_dp(item, 25)}
-                            </span>
-                          ))}
+                        <label
+                          className="wrapper_icon_tools"
+                          htmlFor="input_image"
+                        >
+                          <AiFillFileImage size={25} className="icon" />
+                        </label>
+                        {icon_input_tools_dp &&
+                          icon_input_tools_dp.map((item, index) =>
+                            Icon_input_tools_dp(item, 25)
+                          )}
                         {text && (
                           <button
                             type="submit"

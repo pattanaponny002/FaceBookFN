@@ -21,6 +21,15 @@ import { userInformation } from "../../../contextAPI/UserContextProvider";
 import Axios from "axios";
 import { socket } from "../../../socket";
 import CircularProgress from "@mui/material/CircularProgress";
+import { flipOver } from "../../../motion";
+import {
+  uploadBytesResumable,
+  ref as REF,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
+import { storage } from "../../../firebase_config";
+import { PostMessageApi } from "../../../assets/classes/post_api";
 interface DialogueProps {
   user: userProps;
   toggle: boolean | undefined;
@@ -41,16 +50,11 @@ const Dialogue = React.forwardRef(
     const [image_profile, setimage_profile] = React.useState<
       testArrayProps[] | undefined
     >([]);
-
+    const [image_URL, setimage_URL] = React.useState<File | null>(null);
     const [text, settext] = React.useState("");
 
     const [isLoading, setisLoading] = React.useState<boolean>(false);
-    // const gallery_slider = new Array(12).fill(0).map(() => ({
-    //   image_number: `https://picsum.photos/id/${Math.round(
-    //     Math.random() * 150
-    //   )}/${100}/${100}`,
-    //   profile: `https://i.pravatar.cc/120?img=${Math.random() * 10}`,
-    // }));
+
     function closeDislogue() {
       if (topic === "main") {
         Dispatch({
@@ -73,38 +77,44 @@ const Dialogue = React.forwardRef(
     async function handlerNewPost() {
       setisLoading((prev) => true);
       const url = process.env.REACT_APP_PORT + "/post_message/api/add";
-      const data = {
-        senderId: user_information?._id,
-        text,
-        photoURL: user_information?.photoURL,
-        sendAt: Date.now(),
-      };
-      const response = await Axios(url, {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        data,
-      });
+      const refStorage = REF(
+        storage,
+        "Potatoes/PostMessage/" + Date.now().toString()
+      );
+      if (user_information) {
+        const postmessageApi = new PostMessageApi(
+          url,
+          refStorage,
+          user_information,
+          image_URL,
+          text
+        );
 
-      if (response.status === 200) {
-        socket.emit("add_post_message", data);
+        const { result, CallbackPostMessage } =
+          await postmessageApi.handlernewPost();
+        if (result === true) {
+          socket.emit("add_post_message", CallbackPostMessage);
 
-        setTimeout(() => {
-          setisLoading((prev) => isLoading);
-          settext("");
-          if (topic === "main") {
-            Dispatch({
-              type: REDUCER_USER.TOGGLE_DIALOGURE_MAIN,
-              payload: { ...user, toggle_dialogue_main: !toggle },
-            });
-          } else {
-            Dispatch({
-              type: REDUCER_USER.TOGGLE_DIALOGURE,
-              payload: { ...user, toggle_dialogue: !toggle },
-            });
-          }
-        }, 3000);
+          setTimeout(() => {
+            setisLoading((prev) => isLoading);
+            settext("");
+            setimage_URL((prev) => null);
+            if (topic === "main") {
+              Dispatch({
+                type: REDUCER_USER.TOGGLE_DIALOGURE_MAIN,
+                payload: { ...user, toggle_dialogue_main: !toggle },
+              });
+            } else {
+              Dispatch({
+                type: REDUCER_USER.TOGGLE_DIALOGURE,
+                payload: { ...user, toggle_dialogue: !toggle },
+              });
+            }
+          }, 3000);
+        }
       }
     }
+
     React.useEffect(() => {
       if (!profile) {
         setProfile((prev) => avatar[Math.floor(Math.random() * avatar.length)]);
@@ -184,28 +194,28 @@ const Dialogue = React.forwardRef(
                         placeholder="What do you think..."
                         onChange={(e) => settext((prev) => e.target.value)}
                       />
-                      {/* <Swiper
-                      className="container_image_input"
-                      slidesPerView={5}
-                      spaceBetween={10}
-                      autoplay
-                      loop={true}
-                      modules={[Autoplay]}
-                    >
-                      {image_profile &&
-                        image_profile.map((item, index) => (
-                          <SwiperSlide key={index} className="wrapper_image">
-                            <img
-                              className="image_input"
-                              src={item.image_number}
-                              alt=""
-                            />
-                          </SwiperSlide>
-                        ))}
-                    </Swiper> */}
                     </div>
                   </div>
                   <div className="profile_option">
+                    <AnimatePresence>
+                      {image_URL && (
+                        <m.div
+                          onClick={() => setimage_URL((prev) => null)}
+                          variants={flipOver}
+                          initial="hidden"
+                          animate={"show"}
+                          exit={"removed"}
+                          transition={{ duration: 0.5 }}
+                          className="previewImage"
+                        >
+                          <img
+                            className="img_post"
+                            src={URL.createObjectURL(image_URL)}
+                            alt=""
+                          />
+                        </m.div>
+                      )}
+                    </AnimatePresence>
                     <div className="container_option_tools">
                       {dialogue_adding &&
                         dialogue_adding.map((item, index) => (
@@ -218,9 +228,29 @@ const Dialogue = React.forwardRef(
                   <div className="profile_option_tools">
                     <div className="container_option_tools">
                       <span className="adding">Add your post</span>
+                      <input
+                        type="file"
+                        id="dialogue_input"
+                        onChange={(e) =>
+                          setimage_URL((prev) =>
+                            e.target.files ? e?.target?.files?.[0] : null
+                          )
+                        }
+                      />
                       <div className="option_tools">
+                        <label
+                          className="wrapper_icon"
+                          htmlFor="dialogue_input"
+                        >
+                          <img
+                            src={dialogue_tools[0]}
+                            loading="lazy"
+                            className="icon"
+                            alt=""
+                          />
+                        </label>
                         {dialogue_tools &&
-                          dialogue_tools.map((item, index) => (
+                          dialogue_tools.slice(1, 5).map((item, index) => (
                             <div className="wrapper_icon" key={index}>
                               <img
                                 src={item}

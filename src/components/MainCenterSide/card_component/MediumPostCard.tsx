@@ -13,7 +13,7 @@ import {
 } from "react-icons/ai";
 import { AnimatePresence } from "framer-motion";
 import { motion as m } from "framer-motion";
-import { drop_down, animate_translateY } from "../../../motion";
+import { drop_down, animate_translateY, flipOver } from "../../../motion";
 import { DisplayMessageProps } from "./DialoguePost";
 import "../../../STYLES/Home/component/MediumPostcard/MediumPostCad.css";
 import { userContextApi } from "../../../contextAPI/UserContextProvider";
@@ -21,8 +21,17 @@ import { userInformation } from "../../../contextAPI/UserContextProvider";
 import Axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { ref } from "firebase/storage";
-import { icon_input_tools } from "../../UTIL_KEEP_STUFF";
+import { icon_input_tools, icon_input_tools_mp } from "../../UTIL_KEEP_STUFF";
 import { Icon_input_tools_mp } from "../../UTIL_KEEP_STUFF";
+
+import {
+  uploadBytesResumable,
+  ref as REF,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
+import { storage } from "../../../firebase_config";
+import { MediumPostApi } from "../../../assets/classes/medium_post_api";
 interface MediumPostCardProp {
   item: DisplayMessageProps;
   name?: string;
@@ -30,7 +39,7 @@ interface MediumPostCardProp {
   isLoadingChat: boolean;
 }
 
-interface DisplayRepliesProps {
+export interface DisplayRepliesProps {
   message_id: string;
   username: string;
   text: string;
@@ -38,7 +47,8 @@ interface DisplayRepliesProps {
   receiverId?: string;
   toReplies: string;
   sendAt: number;
-  photoURL?: string;
+  photoURL: string;
+  imageURL?: string;
 }
 const MediumPostCard = ({
   item,
@@ -60,7 +70,7 @@ const MediumPostCard = ({
   const { user_information } = useContext(userContextApi);
   const [repliedTo, setrepliedTo] = React.useState<string>(item.username);
   const [isLoading, setisLoading] = React.useState<boolean>(false);
-
+  const [image_URL, setimage_URL] = React.useState<File | null>(null);
   function convertTime(time: number) {
     const currentTime = Date.now();
 
@@ -107,28 +117,30 @@ const MediumPostCard = ({
     e.preventDefault();
     if (item._id) {
       callbackIsLoading(true);
-      const data: DisplayRepliesProps = {
-        message_id: item._id,
-        username: user_information.username,
-        text: repliedText,
-        senderId: user_information._id,
-        photoURL: user_information.photoURL,
-        toReplies: repliedTo,
-        sendAt: new Date().getTime(),
-      };
-
+      ///
+      const refStorageRef = REF(
+        storage,
+        "/Potatoes/MediumPost/" + Date.now().toString()
+      );
       const url = process.env.REACT_APP_PORT + "/repliedchat_post/api/add";
-      const response = await Axios(url, {
-        method: "post",
-        data,
-        headers: { "Content-Type": "application/json" },
-      });
 
-      if (response.status === 200) {
-        const arraivalMessage = response.data.result;
-        console.log("arraivalMessage", arraivalMessage);
-        setdisplayRepliesMessage((prev) => [...prev, arraivalMessage]);
+      const mediumPostapi = new MediumPostApi(
+        url,
+        image_URL,
+        refStorageRef,
+        user_information,
+        repliedText,
+        repliedTo,
+        item
+      );
+
+      const { result, arraivalMEdiumMessage } =
+        await mediumPostapi.handlerSendMediumPost();
+
+      if (result === true && arraivalMEdiumMessage) {
+        setdisplayRepliesMessage((prev) => [...prev, arraivalMEdiumMessage]);
         setrepliedText((prev) => "");
+        setimage_URL((prev) => null);
         setTimeout(() => {
           settoggleSubReplies((prev) => false);
           callbackIsLoading(false);
@@ -138,7 +150,6 @@ const MediumPostCard = ({
   }
   async function fetchMeidiumMessage() {
     if (user_information && item._id) {
-      console.log("FETCH MEDIUM ", item._id);
       const url =
         process.env.REACT_APP_PORT + "/repliedchat_post/api/" + item._id;
 
@@ -148,7 +159,6 @@ const MediumPostCard = ({
 
       if (response.status === 200) {
         const arraivalMessage = response.data.result;
-        console.log("Start FETCH MEDIUM", arraivalMessage);
 
         setdisplayRepliesMessage((prev) => [...arraivalMessage]);
       }
@@ -174,12 +184,19 @@ const MediumPostCard = ({
         <div className="wrapper_image">
           <img src={item?.photoURL} alt="" />
         </div>
+
         <div className="container_description">
           <span className="message_card">
             <span className="name">
               {item?.username} <img src={checklist} alt="" />
             </span>
             <span className="message">{item.text}</span>
+
+            {item.imageURL && (
+              <div className="wrapper_photo">
+                <img src={item.imageURL} alt="" />
+              </div>
+            )}
           </span>
           <div className="container_replies">
             <span className="tool">Like</span>
@@ -214,7 +231,7 @@ const MediumPostCard = ({
             displayRepliesMessage
               .sort((a, b) => b?.sendAt - a?.sendAt)
               .map((textreplies, index) => (
-                <div className="card" ref={refSubMedium}>
+                <div key={index} className="card" ref={refSubMedium}>
                   <span className="message_card">
                     <div className="sub_wrapper_image">
                       <img src={textreplies.photoURL} alt="" />
@@ -222,7 +239,7 @@ const MediumPostCard = ({
                     <span className="name">
                       {textreplies.username} <img src={checklist} alt="" />
                     </span>
-
+                    {/* message */}
                     <div className="message">
                       <span className="wrapper_message">
                         <h4 className="text_h4">
@@ -236,6 +253,14 @@ const MediumPostCard = ({
                         </h4>
                       </span>
                     </div>
+
+                    {textreplies.imageURL && (
+                      <div className="wrapper_imageURL">
+                        <img src={textreplies.imageURL} alt="" />
+                      </div>
+                    )}
+
+                    {/* message */}
                   </span>
                   <div className="container_replies">
                     <span className="tool">Like</span>
@@ -256,7 +281,7 @@ const MediumPostCard = ({
               ))}
         </div>
       )}
-      {/* sub comment */}
+      {/* sub comment input */}
       <AnimatePresence>
         {isReplies && (
           <m.form
@@ -269,6 +294,24 @@ const MediumPostCard = ({
             transition={{ duration: 0.5, easings: ["easeInOut"] }}
             onSubmit={sendReplies}
           >
+            <AnimatePresence>
+              {image_URL && (
+                <m.div
+                  onClick={() => setimage_URL((prev) => null)}
+                  variants={flipOver}
+                  initial="hidden"
+                  animate="show"
+                  exit={"removed"}
+                  className="previewImage"
+                >
+                  <img
+                    src={URL.createObjectURL(image_URL)}
+                    className="imageInput"
+                    alt=""
+                  />
+                </m.div>
+              )}
+            </AnimatePresence>
             <div className="wrapper_image">
               <img
                 src={
@@ -289,12 +332,20 @@ const MediumPostCard = ({
               />
 
               <div className="container_input_tools">
-                {icon_input_tools &&
-                  icon_input_tools.map((item, index) => (
-                    <span key={index} className="wrapper_icon_tools">
-                      {Icon_input_tools_mp(item)}
-                    </span>
-                  ))}
+                <input
+                  type="file"
+                  id="sub_input_image"
+                  onChange={(e) =>
+                    setimage_URL(e.target.files ? e.target.files[0] : null)
+                  }
+                />
+                <label className="wrapper_icon_tools" htmlFor="sub_input_image">
+                  <AiFillFileImage size={25} className="icon" />
+                </label>
+                {icon_input_tools_mp &&
+                  icon_input_tools_mp.map((item, index) =>
+                    Icon_input_tools_mp(item)
+                  )}
 
                 <span className="To">To:</span>
                 <span className="replieTo">@{repliedTo}@@</span>
