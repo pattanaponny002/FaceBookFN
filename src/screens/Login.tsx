@@ -158,21 +158,27 @@ const Login = () => {
   }
   async function handlerRegister(e: FormEvent) {
     e.preventDefault();
+    if (!userRegister.username && !userRegister.password) {
+      const url = process.env.REACT_APP_PORT + "/user/api/add";
 
-    const url = process.env.REACT_APP_PORT + "/user/api/add";
-
-    const refStoreage = ref(storage, "/Potatoes/" + Date.now().toString());
-    const registerApi = new RegisterApi(refStoreage, userRegister, url);
-    const result = await registerApi.handlerRegister();
-    // const result = new RegisterApi(refStoreage,userRegister)
-    if (result) {
-      // alert("Register Successfully");
-      setuserLogin((prev) => ({ ...prev, ...userRegister }));
-      Object.keys(userRegister).forEach((item) =>
-        setuserRegsiter((prev) => ({ ...prev, [item]: "" }))
-      );
-      settoggleContainer((prev) => !prev);
+      const refStoreage = ref(storage, "/Potatoes/" + Date.now().toString());
+      const registerApi = new RegisterApi(refStoreage, userRegister, url);
+      const result = await registerApi.handlerRegister();
+      // const result = new RegisterApi(refStoreage,userRegister)
+      if (result) {
+        // alert("Register Successfully");
+        setuserLogin((prev) => ({ ...prev, ...userRegister }));
+        Object.keys(userRegister).forEach((item) =>
+          setuserRegsiter((prev) => ({ ...prev, [item]: "" }))
+        );
+        settoggleContainer((prev) => !prev);
+      }
+    } else {
+      alert("Please fill the username and password before submit.!");
+      return;
     }
+
+    ////
   }
 
   async function checkAvailable(username: string) {
