@@ -111,11 +111,10 @@ const Postcard = ({
 
   async function fetchPostUser() {
     if (post_item?.senderId) {
+      console.log("post_item", post_item);
       const url =
         process.env.REACT_APP_PORT + `/user/api/findByID/${post_item.senderId}`;
-
       const response = await Axios(url, { method: "get" });
-
       if (response.status === 200) {
         const message = response.data.message;
         const user = response.data.result;

@@ -184,6 +184,7 @@ const DialoguePost = ({ user, toggle, Dispatch, topic }: DialogueProps) => {
   }, [post_message._id]);
   async function fetchPostUser() {
     if (post_message?.senderId) {
+      console.log("HERE", post_message?.senderId);
       const url =
         process.env.REACT_APP_PORT +
         `/user/api/findByID/${post_message.senderId}`;

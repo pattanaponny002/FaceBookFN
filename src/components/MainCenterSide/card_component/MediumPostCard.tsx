@@ -99,6 +99,7 @@ const MediumPostCard = ({
     };
   }, []);
   async function fetchPostUser() {
+    console.log("MEDIUM ?");
     if (item?.senderId) {
       const url =
         process.env.REACT_APP_PORT + `/user/api/findByID/${item.senderId}`;

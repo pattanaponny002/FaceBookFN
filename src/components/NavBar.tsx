@@ -52,6 +52,7 @@ const NavBar = () => {
   const refRightDropDownChat = React.useRef<HTMLDivElement>(null);
   const refRightDropDownMessager = React.useRef<HTMLDivElement>(null);
   const refRightDropDownOption = React.useRef<HTMLDivElement>(null);
+
   const [state, dispatch] = React.useReducer(reducer_post, { ...state_post });
   const [toggleDrawer, settoggleDrawer] = React.useState<boolean>(false);
   const [toggleSearchBar, settoggleSearchBar] = React.useState<boolean>(false);

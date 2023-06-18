@@ -24,14 +24,22 @@ const FriendCard = ({ item, userID, onlineUsers, index }: FriendCardProps) => {
   const { dataChat, Dispatch_chatbox } = React.useContext(ChatBoxContextApi);
   async function fetchUSer(item: MembersProps) {
     const friendId = item.members.find((member) => member !== userID);
+
     const url = process.env.REACT_APP_PORT + "/user/api/findByID/" + friendId;
 
-    const response = await Axios(url, { method: "get" });
-    if (response.status === 200) {
-      const userChat = response.data.result;
-      //   alert(message);
+    if (friendId) {
+      try {
+        const response = await Axios(url, { method: "get" });
+        if (response.status === 200) {
+          const userChat = response.data.result;
+          //   alert(message);
 
-      setchat((prev) => ({ ...prev, ...userChat }));
+          setchat((prev) => ({ ...prev, ...userChat }));
+        }
+      } catch (err) {
+        alert("ERROR");
+        console.log("FRIEND CARD /t", err);
+      }
     }
   }
 

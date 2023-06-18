@@ -171,20 +171,25 @@ const Login = () => {
     }
   }
 
-  async function onhandlerFetchAutoSave(username: string) {
-    const url = process.env.REACT_APP_PORT + `/user/api/find?name=${username}`;
-    const response = await Axios(url, { method: "get" });
-    if (response.status === 200) {
-      const userAutosave = response.data.result;
+  //get username from
 
-      setuseAutoSave((prev) => userAutosave);
-      Dispatch_info({
-        type: REDUCER_CURRENT_INFORMATION.SET_LOGIN_INFORMATION,
-        payload: { ...state, ...userAutosave },
-      });
+  async function onhandlerFetchAutoSave(username: string) {
+    if (username) {
+      const url =
+        process.env.REACT_APP_PORT + `/user/api/find?name=${username}`;
+      const response = await Axios(url, { method: "get" });
+      if (response.status === 200) {
+        const userAutosave = response.data.result;
+
+        setuseAutoSave((prev) => userAutosave);
+        Dispatch_info({
+          type: REDUCER_CURRENT_INFORMATION.SET_LOGIN_INFORMATION,
+          payload: { ...state, ...userAutosave },
+        });
+      }
     }
   }
-
+  // adter clock pass the info to login inputElement
   function onhandlerAutoSave() {
     setisLoading(true);
     if (useAutoSave) {
@@ -201,12 +206,12 @@ const Login = () => {
   }
 
   React.useEffect(() => {
-    if (!useAutoSave.username || !useAutoSave.username) {
+    if (!useAutoSave.username || !useAutoSave.password) {
       const autoSave = localStorage.getItem("autoSaveUser"); // how to set as <userLogin>
       console.log("save", autoSave);
       if (autoSave) {
         const parsedUser = JSON.parse(autoSave);
-
+        console.log(parsedUser);
         onhandlerFetchAutoSave(parsedUser.username);
       } else {
         return;
@@ -255,19 +260,23 @@ const Login = () => {
                     <CircularProgress />
                   </div>
                 )}
-                <div className="wrapper_image">
-                  <img
-                    src={
-                      useAutoSave.photoURL
-                        ? useAutoSave.photoURL
-                        : account?.[0].profile
-                    }
-                    alt=""
-                  />
-                </div>
-                <div className="tools">
-                  <span>{useAutoSave.username}</span>
-                </div>
+                {useAutoSave?.photoURL && (
+                  <div className="wrapper_image">
+                    <img
+                      src={
+                        useAutoSave?.photoURL
+                          ? useAutoSave?.photoURL
+                          : account?.[0].profile
+                      }
+                      alt=""
+                    />
+                  </div>
+                )}
+                {useAutoSave && (
+                  <div className="tools">
+                    <span>{useAutoSave?.username}</span>
+                  </div>
+                )}
               </div>
               <div className="card_account">
                 <div className="wrapper_image">
