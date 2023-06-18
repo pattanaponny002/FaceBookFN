@@ -10,6 +10,7 @@ import { REDUCER_CURRENT_MAIN } from "../../reducers_utils/reducer_mainuser";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion as m } from "framer-motion";
 import { drop_down, fadeInd_Right } from "../../motion";
+import empty_user from "../../assets/logos/user (3).png";
 interface ListNewFreindProps {
   item: userInformation;
   delay: number;
@@ -41,12 +42,17 @@ const ListNewFreind = ({
       }}
     >
       <div className="first_Section">
-        <div className="wrapper_new_friend">
-          <img className="img_new_friend" src={item.photoURL} />
-        </div>
+        {item.photoURL ? (
+          <div className="wrapper_new_friend">
+            <img className="img_new_friend" src={item.photoURL} />
+          </div>
+        ) : (
+          <div className="wrapper_new_friend">
+            <img className="img_new_friend" src={empty_user} />
+          </div>
+        )}
         <span>{item.username}</span>
       </div>
-
       <span className="wrapper_card">
         <AiFillCloseCircle />
       </span>

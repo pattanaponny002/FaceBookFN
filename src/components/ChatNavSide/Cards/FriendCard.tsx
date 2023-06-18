@@ -11,6 +11,7 @@ import { ChatBoxContextApi } from "../../../contextAPI/ChatBoxContextProvider";
 import { onlineUser } from "../ChatSide";
 import { DataChatProps } from "../../../contextAPI/ChatBoxContextProvider";
 import { socket } from "../../../socket";
+import empty_user from "../../../assets/logos/user (3).png";
 interface FriendCardProps {
   item: MembersProps;
   userID: string;
@@ -122,7 +123,11 @@ const FriendCard = ({ item, userID, onlineUsers, index }: FriendCardProps) => {
   return (
     <li className="card_friend_list" onMouseDown={addConversation}>
       <div className="wrapper_profile">
-        <img src={chat?.photoURL} alt="" />
+        {chat?.photoURL ? (
+          <img src={chat?.photoURL} alt="" />
+        ) : (
+          <img src={empty_user} alt="" />
+        )}
         <span
           className="online"
           style={{ backgroundColor: online ? "mediumseagreen" : "crimson" }}

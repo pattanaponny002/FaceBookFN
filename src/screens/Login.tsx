@@ -22,6 +22,7 @@ import { storage } from "../firebase_config";
 import { RegisterApi } from "../assets/classes/register_utils_and_chatbox";
 import { REDUCER_CURRENT_INFORMATION } from "../reducers_utils/reducer_info_utils";
 import { CircularProgress } from "@mui/material";
+import empty_user from "../assets/logos/user (3).png";
 interface MessageProps {
   text: string;
   createdAt: string;
@@ -108,37 +109,51 @@ const Login = () => {
   });
   async function handlerLogin(e?: FormEvent | undefined) {
     e?.preventDefault();
+    try {
+      if (userLogin.username && userLogin.password) {
+        setisLoading(true);
+        const url = process.env.REACT_APP_PORT + "/user/api/login";
+        const data = {
+          username: userLogin.username,
+          password: userLogin.password,
+        };
 
-    if (userLogin.username && userLogin.password) {
-      setisLoading(true);
-      const url = process.env.REACT_APP_PORT + "/user/api/login";
-      const data = {
-        username: userLogin.username,
-        password: userLogin.password,
-      };
+        const result = await Axios(url, {
+          method: "post",
+          data,
+          headers: { "Content-Type": "application/json" },
+        });
+        Dispatch_info({
+          type: REDUCER_CURRENT_INFORMATION.SET_LOGIN_INFORMATION,
+          payload: { ...state, ...result.data.result },
+        });
+        if (result.status === 200) {
+          localStorage.setItem("autoSaveUser", JSON.stringify(data));
 
-      const result = await Axios(url, {
-        method: "post",
-        data,
-        headers: { "Content-Type": "application/json" },
-      });
-      Dispatch_info({
-        type: REDUCER_CURRENT_INFORMATION.SET_LOGIN_INFORMATION,
-        payload: { ...state, ...result.data.result },
-      });
-      if (result) {
-        localStorage.setItem("autoSaveUser", JSON.stringify(data));
-        alert(result.data.message);
-        setTimeout(() => {
+          // not found
+          alert(result.data.message);
+          setTimeout(() => {
+            setisLoading(false);
+            navigate("/Home");
+          }, 1000);
+        } else {
+          alert(
+            "NO found the username or this accout available.. please register"
+          );
+          settoggleContainer((prev) => !false);
           setisLoading(false);
-          navigate("/Home");
-        }, 1000);
+          return;
+        }
+      } else {
+        alert(
+          "Either username or password could not be blank please fill up the username and password accordingly"
+        );
+        return;
       }
-    } else {
-      alert(
-        "Either username or password could not be blank please fill up the username and password accordingly"
-      );
-      return;
+    } catch (err) {
+      alert("ERROR Incorrect username or password");
+      setuserLogin((prev) => ({ ...userLogin, username: "", password: "" }));
+      setisLoading(false);
     }
   }
   async function handlerRegister(e: FormEvent) {
@@ -260,21 +275,25 @@ const Login = () => {
                     <CircularProgress />
                   </div>
                 )}
-                {useAutoSave?.photoURL && (
+                {useAutoSave?.photoURL ? (
                   <div className="wrapper_image">
-                    <img
-                      src={
-                        useAutoSave?.photoURL
-                          ? useAutoSave?.photoURL
-                          : account?.[0].profile
-                      }
-                      alt=""
-                    />
+                    <img src={useAutoSave?.photoURL} alt="" />
+                  </div>
+                ) : (
+                  <div
+                    className="wrapper_image"
+                    style={{ backgroundColor: "rgba(201, 193, 193, 0.5)" }}
+                  >
+                    <img src={account?.[0].profile} alt="" />
                   </div>
                 )}
-                {useAutoSave && (
+                {useAutoSave.username ? (
                   <div className="tools">
                     <span>{useAutoSave?.username}</span>
+                  </div>
+                ) : (
+                  <div className="tools">
+                    <span>NO USER AVAILABLE</span>
                   </div>
                 )}
               </div>
