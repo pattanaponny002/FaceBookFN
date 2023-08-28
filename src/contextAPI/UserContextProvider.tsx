@@ -1,7 +1,14 @@
 import React, { useState, Dispatch } from "react";
 import { reducer_user } from "../reducers_utils/reducer_user";
-import { State_user } from "../reducers_utils/reducer_register_ang_login";
-import { reducer_information } from "../reducers_utils/reducer_info_utils";
+import {
+  REDUCER_INFORMATION,
+  State_user,
+} from "../reducers_utils/reducer_register_ang_login";
+import {
+  REDUCER_CURRENT_INFORMATION,
+  reducer_information,
+} from "../reducers_utils/reducer_info_utils";
+import { REDUCER_CURRENT_MAIN } from "../reducers_utils/reducer_mainuser";
 export interface userProps {
   name?: string;
   age: number;
@@ -64,7 +71,23 @@ const UserContextProvider = ({ children }: UserProviderProps) => {
   const [user_info, dispatch_info] = React.useReducer(reducer_information, {
     ...state_info,
   });
+  React.useEffect(() => {
+    //autoSaveUser
 
+    const userInfo = localStorage.getItem("autoSaveUser");
+    if (!state_info._id && userInfo) {
+      console.log("INFO", userInfo);
+
+      dispatch_info({
+        type: REDUCER_CURRENT_INFORMATION.SET_LOGIN_INFORMATION,
+        payload: { ...state_info, ...JSON.parse(userInfo) },
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    console.log("GET STATE", state_info);
+  }, [state_info._id]);
   const context: UserContextProps = {
     user,
     Dispatch: dispatch,

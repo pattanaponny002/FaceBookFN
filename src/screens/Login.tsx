@@ -128,7 +128,11 @@ const Login = () => {
           payload: { ...state, ...result.data.result },
         });
         if (result.status === 200) {
-          localStorage.setItem("autoSaveUser", JSON.stringify(data));
+          console.log("SAVE TO LOCAL STORAGE", result.data.result);
+          localStorage.setItem(
+            "autoSaveUser",
+            JSON.stringify(result.data.result)
+          );
 
           // not found
           alert(result.data.message);
@@ -158,7 +162,7 @@ const Login = () => {
   }
   async function handlerRegister(e: FormEvent) {
     e.preventDefault();
-    if (!userRegister.username && !userRegister.password) {
+    if (userRegister.username && userRegister.password) {
       const url = process.env.REACT_APP_PORT + "/user/api/add";
 
       const refStoreage = ref(storage, "/Potatoes/" + Date.now().toString());
